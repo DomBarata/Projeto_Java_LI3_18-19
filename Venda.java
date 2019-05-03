@@ -63,34 +63,6 @@ public class Venda implements IVenda, Serializable {
         return this.preco*this.quant;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Venda{");
-        sb.append("codProd='").append(codProd).append('\'')
-            .append(", codCli='").append(codCli).append('\'')
-            .append(", tipo='").append(tipo).append('\'')
-            .append(", mes=").append(mes)
-            .append(", filial=").append(filial)
-            .append(", quant=").append(quant)
-            .append(", preco=").append(preco)
-            .append('}');
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Venda)) return false;
-        Venda venda = (Venda) o;
-        return getMes() == venda.getMes() &&
-                getFilial() == venda.getFilial() &&
-                getQuant() == venda.getQuant() &&
-                Double.compare(venda.getPreco(), getPreco()) == 0 &&
-                Objects.equals(getCodProd(), venda.getCodProd()) &&
-                Objects.equals(getCodCli(), venda.getCodCli()) &&
-                Objects.equals(getTipo(), venda.getTipo());
-    }
-
     public Venda clone(){
         return this;
     }
