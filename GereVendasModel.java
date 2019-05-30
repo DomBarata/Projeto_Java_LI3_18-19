@@ -40,17 +40,17 @@ public class GereVendasModel implements InterfGereVendasModel {
     public void createData() {
         List<String> files;
 
-        files = lerAllLines("Clientes.txt");
+        files = lerAllLines(CLIENTES);
         for(String s : files){
             catcli.adiciona(s);
         }
 
-        files = lerAllLines("Produtos.txt");
+        files = lerAllLines(PRODUTOS);
         for(String s : files){
             ctprods.adiciona(s);
         }
 
-        files = lerAllLines("Vendas_1M.txt");
+        files = lerAllLines(VENDAS);
         for(String s : files) {
             InterfVenda venda = divideVenda(s);
             if(verificaVenda(venda)) {
