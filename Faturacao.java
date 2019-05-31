@@ -1,5 +1,7 @@
 import java.util.*;
 
+import static java.lang.System.out;
+
 public class Faturacao implements InterfFaturacao{
     //Mapa com key codProd, e uma lista com 2 posicoes:
     //0 Venda Normal, 1 Venda em Promocao, e o seu total faturado
@@ -40,9 +42,9 @@ public class Faturacao implements InterfFaturacao{
         }
     }
 
-    public List<String> getListaOrdenadaProdutosNuncaComprados(CatProds catpro){
+    public Set<String> getListaOrdenadaProdutosNuncaComprados(CatProds catpro){
         Set<String> prods = catpro.getProdutos();
-        List<String> nuncaComprados = new ArrayList<>(); //comparator para poder ordenar alfabeticamente
+        Set<String> nuncaComprados = new TreeSet<>(); //comparator para poder ordenar alfabeticamente
         for(String s : prods){
             if(!this.faturacao.containsKey(s))
                 nuncaComprados.add(s);
