@@ -20,14 +20,14 @@ public class Filial implements InterfFilial{
                 // adicionar info
                 boolean[] promo = info.getPromo();
                 if(venda.getTipo().equals("P")) {
-                    promo[venda.getMes()] = true;
+                    promo[venda.getMes()-1] = true;
                 }else{
-                    promo[venda.getMes()] = false;
+                    promo[venda.getMes()-1] = false;
                 }
                 info.setPromo(promo);
 
                 int[] quantidadeComprada = info.getQuantidadeComprada();
-                quantidadeComprada[venda.getMes()] = venda.getQuant();
+                quantidadeComprada[venda.getMes()-1] = venda.getQuant();
                 info.setQuantidadeComprada(quantidadeComprada);
 
                 //reinserir info na list
@@ -38,14 +38,14 @@ public class Filial implements InterfFilial{
                 //criar nova info
                 boolean[] promo = new boolean[12];
                 if(venda.getTipo().equals("P")) {
-                    promo[venda.getMes()] = true;
+                    promo[venda.getMes()-1] = true;
                 }else{
-                    promo[venda.getMes()] = false;
+                    promo[venda.getMes()-1] = false;
                 }
                 info.setPromo(promo);
 
                 int[] quantidadeComprada = new int[12];
-                quantidadeComprada[venda.getMes()] = venda.getQuant();
+                quantidadeComprada[venda.getMes()-1] = venda.getQuant();
                 info.setQuantidadeComprada(quantidadeComprada);
 
                 //inserir numa lista
