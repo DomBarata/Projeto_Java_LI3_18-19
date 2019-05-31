@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Faturacao implements InterfFaturacao{
     //Mapa com key codProd, e uma lista com 2 posicoes:
@@ -41,5 +38,15 @@ public class Faturacao implements InterfFaturacao{
                 this.faturacao.put(venda.getCodPro(), promo);
             }
         }
+    }
+
+    public List<String> getListaOrdenadaProdutosNuncaComprados(CatProds catpro){
+        Set<String> prods = catpro.getProdutos();
+        List<String> nuncaComprados = new ArrayList<>(); //comparator para poder ordenar alfabeticamente
+        for(String s : prods){
+            if(!this.faturacao.containsKey(s))
+                nuncaComprados.add(s);
+        }
+        return nuncaComprados;
     }
 }

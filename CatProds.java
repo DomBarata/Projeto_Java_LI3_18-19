@@ -1,4 +1,6 @@
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class CatProds implements InterfCatProds{
@@ -17,4 +19,9 @@ public class CatProds implements InterfCatProds{
     public boolean contains(String codPro) {
         return this.produtos.contains(codPro);
     }
+
+    public Set<String> getProdutos(){
+        return new HashSet<>(this.produtos);
+    }
 }
+
