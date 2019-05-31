@@ -12,15 +12,46 @@ public class Filial implements InterfFilial{
         if(this.produtos.containsKey(venda.getCodPro())){//se o mapa já tiver esse produto
             List<InfoFilial> clientes = this.produtos.get(venda.getCodPro()); //todos os clientes
                                                                             // que já compraram esse produto
-            if(clientes.contains(new InfoFilial(venda.getCodCli()))){//se ja tiver um produto com o mesmo codigo de cliente
+            InfoFilial info = new InfoFilial(venda.getCodCli());
+            if(clientes.contains(info)){//se ja tiver um produto com o mesmo codigo de cliente
                 //ir buscar esse info
-                //adicionar info
-                //reincerir info na list
-                //reincerir list no map
+                info = clientes.get(clientes.indexOf(info));
+
+                // adicionar info
+                boolean[] promo = info.getPromo();
+                if(venda.getTipo().equals("P")) {
+                    promo[venda.getMes()] = true;
+                }else{
+                    promo[venda.getMes()] = false;
+                }
+                info.setPromo(promo);
+
+                int[] quantidadeComprada = info.getQuantidadeComprada();
+                quantidadeComprada[venda.getMes()] = venda.getQuant();
+                info.setQuantidadeComprada(quantidadeComprada);
+
+                //reinserir info na list
+                clientes.set(clientes.indexOf(info),info);
+                //reinserir list no map
+                produtos.put(venda.getCodPro(),clientes);
             }else{
                 //criar nova info
+                boolean[] promo = new boolean[12];
+                if(venda.getTipo().equals("P")) {
+                    promo[venda.getMes()] = true;
+                }else{
+                    promo[venda.getMes()] = false;
+                }
+                info.setPromo(promo);
+
+                int[] quantidadeComprada = new int[12];
+                quantidadeComprada[venda.getMes()] = venda.getQuant();
+                info.setQuantidadeComprada(quantidadeComprada);
+
                 //inserir numa lista
+                clientes.add(info);
                 //inserir lisa no map
+                produtos.put(venda.getCodPro(),clientes);
             }
         }else{//Se o mapa nao tiver esse produto
             List<InfoFilial> clientes = new ArrayList<>();
