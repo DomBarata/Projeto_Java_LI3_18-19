@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Filial implements InterfFilial{
     //key produto, value set com todas as informacoes necessarias
-    Map<String, List<InfoFilial>> produtos;
+    private Map<String, List<InfoFilial>> produtos;
 
     public Filial(){
         this.produtos = new HashMap<>();
@@ -11,7 +11,7 @@ public class Filial implements InterfFilial{
     public void adiciona(InterfVenda venda) {
         if(this.produtos.containsKey(venda.getCodPro())){//se o mapa já tiver esse produto
             List<InfoFilial> clientes = this.produtos.get(venda.getCodPro()); //todos os clientes
-                                                                            // que já compraram esse produto
+            // que já compraram esse produto
             InfoFilial info = new InfoFilial(venda.getCodCli());
             if(clientes.contains(info)){//se ja tiver um produto com o mesmo codigo de cliente
                 //ir buscar esse info
@@ -37,11 +37,7 @@ public class Filial implements InterfFilial{
             }else{
                 //criar nova info
                 boolean[] promo = new boolean[12];
-                if(venda.getTipo().equals("P")) {
-                    promo[venda.getMes()-1] = true;
-                }else{
-                    promo[venda.getMes()-1] = false;
-                }
+                promo[venda.getMes()-1] = venda.getTipo().equals("P");
                 info.setPromo(promo);
 
                 int[] quantidadeComprada = new int[12];
@@ -56,7 +52,7 @@ public class Filial implements InterfFilial{
         }else{//Se o mapa nao tiver esse produto
             List<InfoFilial> clientes = new ArrayList<>();
             clientes.add(new InfoFilial(venda.getCodCli(), venda.getQuant(),
-                                        venda.getMes(), venda.getTipo().equals("P")));
+                    venda.getMes(), venda.getTipo().equals("P")));
             this.produtos.put(venda.getCodPro(), clientes);
         }
     }

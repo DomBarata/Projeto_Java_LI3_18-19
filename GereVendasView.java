@@ -1,5 +1,8 @@
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Set;
+
 import static java.lang.System.out;
 import static java.lang.System.in;
 
@@ -41,7 +44,7 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return txt;
     }
 
@@ -61,7 +64,7 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return i;
     }
 
@@ -80,7 +83,7 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return d;
     }
 
@@ -99,7 +102,7 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return f;
     }
 
@@ -118,7 +121,7 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return b;
     }
 
@@ -137,26 +140,39 @@ public class GereVendasView implements InterfGereVendasView {
             input.nextLine();
             }
         }
-        input.close();
+        //input.close();
         return s;
     }
 
-    public static void menu(){
+    public int menu(){
         out.println("1 - Lista ordenada alfabeticamente com os códigos dos produtos nunca comprados e o seu respectivo total");
         out.println("2 - Consultar número total global de vendas realizadas");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
 
+        /*out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+        out.println("");
+*/
+
+        return lerInt();
+    }
+
+    public void printPaginacao(Set<String> set){
+        waiting();
+    }
+
+    private void waiting(){
+        try {
+            System.in.read();
+        }catch (IOException io){System.out.println(io);}
     }
 }
 

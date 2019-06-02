@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.SplittableRandom;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -29,6 +26,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         setFILIAIS(Integer.parseInt(files.get(3)));
         files.clear();
 
+
         ctprods = new CatProds();
         catcli = new CatClientes();
         fact = new Faturacao();
@@ -39,17 +37,27 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public void createData() {
         List<String> files;
-
+        int i = 0;
+        /* TESTE
+           out.println(CLIENTES);
+           out.println(PRODUTOS);
+           out.println(VENDAS);
+           out.println(FILIAIS);
+        */
         files = lerAllLines(CLIENTES);
         for(String s : files){
             catcli.adiciona(s);
+            i++;
         }
-
+        out.println(i); //teste
+        i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
-            ctprods.adiciona(s);
+                ctprods.adiciona(s);
+                i++;
         }
-
+        out.println(i); //teste
+        i=0;
         files = lerAllLines(VENDAS);
         for(String s : files) {
             InterfVenda venda = divideVenda(s);
@@ -60,8 +68,10 @@ public class GereVendasModel implements InterfGereVendasModel {
                 f.adiciona(venda);
                 filial.add(venda.getFilial()-1, f);
                 fact.adiciona(venda);
+                i++;
             }
         }
+        out.println(i); //teste
     }
 
     private boolean verificaVenda(InterfVenda venda) {
@@ -116,5 +126,9 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public static void setFILIAIS(int FILIAIS) {
         GereVendasModel.FILIAIS = FILIAIS;
+    }
+
+    public Set<String> querie1(){
+        return this.fact.getListaOrdenadaProdutosNuncaComprados(ctprods);
     }
 }
