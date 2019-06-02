@@ -50,4 +50,8 @@ public class Faturacao implements InterfFaturacao{
         System.out.println("nunca comprados " + nuncaComprados.size()); //a correr teste
         return nuncaComprados;
     }
+
+    public double getTotalFaturadoProd(String codProd){
+        return this.faturacao.get(codProd).get(0)+this.faturacao.get(codProd).get(1);
+    }
 }

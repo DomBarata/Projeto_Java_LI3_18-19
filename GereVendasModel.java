@@ -15,6 +15,7 @@ public class GereVendasModel implements InterfGereVendasModel {
     private InterfCatClientes catcli;
     private InterfFaturacao fact;
     private List<InterfFilial> filial;
+    private int[] numVendas = new int[12];
 
     public GereVendasModel(){
         List<String> files = lerAllLines("configs.txt");
@@ -66,6 +67,7 @@ public class GereVendasModel implements InterfGereVendasModel {
                 f.adiciona(venda);
                 filial.add(venda.getFilial()-1, f);
                 fact.adiciona(venda);
+                numVendas[venda.getMes()-1]++;
                 i++;
             }
         }
@@ -135,7 +137,26 @@ public class GereVendasModel implements InterfGereVendasModel {
         for(int i = 0; i < FILIAIS; i++){
             total.put(i, filial.get(i).totalVendasEClientesMes(mes));
         }
+        return total;
+    }
 
+    public int[] querie3VezesComprado(String codProd){
+        int[] total = new int[12];
+        for(InterfFilial f: filial){
+            for(int i=0; i<12; i++){
+                total[i] += f.vezesProdComprado(codProd)[i];
+            }
+        }
+        return total;
+    }
+
+    public int[] querie3Clientes(String codProd){
+        int[] total = new int[12];
+        for(InterfFilial f: filial){
+            for(int i=0; i<12; i++){
+                total[i] += f.clientesProd(codProd)[i];
+            }
+        }
         return total;
     }
 

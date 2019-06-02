@@ -159,9 +159,9 @@ public class GereVendasView implements InterfGereVendasView {
         out.println("");
         out.println("");
         out.println("");
-        out.println("");
-        out.println("");
-*/
+        out.println("");*/
+        out.println("0 - Sair");
+
 
         return lerInt();
     }
