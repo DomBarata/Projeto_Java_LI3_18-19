@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Set;
 
 import static java.lang.System.out;
@@ -34,18 +35,26 @@ public class GereVendasController implements InterfGereVendasController {
                            break;
                         }
                         int opSub = this.view.submenuQuerie2();
-                        switch(opSub)
-                        {
-                            case 1: total = this.model.querie2global(mes-1);
-                                    break;
-                            case 2: total = this.model.querie2filial(mes-1,this.view.getNumFilial()-1);
-                                    break;
-                            default: this.view.printOpInvalida();
-                                    break;
+                        Map<Integer, int[]> res =  this.model.querie2(mes-1);
+                        if(opSub == 1){
+                            for(Map.Entry<Integer, int[]> entry: res.entrySet()) {
+                                total[0] += entry.getValue()[0];
+                                total[1] += entry.getValue()[1];
+                            }
+                            this.view.printQuerie2Global(total);
+                        }else if(opSub == 2){
+                            this.view.printQuerie2Filial(this.model.querie2(mes-1));
+                        }else{
+                            this.view.printOpInvalida();
                         }
-                        this.view.printResQuerie2(total);
                         break;
-                case 3:
+                case 3: String cod = this.view.getCodCliente();
+                        if(this.model.existeCodCliente(cod)){
+
+                        }else{
+                            this.view.printInvalido(cod);
+                        }
+
                 case 4:
                 case 5:
                 case 6:
@@ -53,8 +62,8 @@ public class GereVendasController implements InterfGereVendasController {
                 case 8:
                 case 9:
                 case 10:
-                case 0:break;
-                default:out.println("Essa opção não existe, por favor selecione outra opção");
+                case 0: break;
+                default: this.view.printOpInvalida();
             }
 
         }while (op != 0);

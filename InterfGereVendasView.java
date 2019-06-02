@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasView {
@@ -6,12 +7,18 @@ public interface InterfGereVendasView {
     int submenuQuerie2();
 
     int getMes();
-    int getNumFilial();
 
-    void printResQuerie2(int[] total);
     void printPaginacao(Set<String> nuncaComprados);
 
     void printOpInvalida();
 
     void printNumMesInvalido();
+
+    void printQuerie2Global(int[] total);
+
+    void printQuerie2Filial(Map<Integer,int[]> querie2);
+
+    String getCodCliente();
+
+    void printInvalido(String cod);
 }

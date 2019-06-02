@@ -59,15 +59,14 @@ public class Filial implements InterfFilial{
 
 
     public int[] totalVendasEClientesMes(int mes){
-
         int[] totalVendasEClientes = new int[2];
-        totalVendasEClientes[0] =0;
         Set<String> clientes = new HashSet<>();
+
         for(List<InfoFilial> l: this.produtos.values()){
             for(InfoFilial info: l){
-                if(info.getQuantidadeComprada()[mes]>0) {
-                    //totalVendasEClientes[0] += info.getQuantidadeComprada()[mes];
-                    totalVendasEClientes[0]++;
+                if(info.getQuantidadeComprada(mes) > 0) {
+                    totalVendasEClientes[0] += info.getQuantidadeComprada(mes);
+                    //totalVendasEClientes[0]++;
                     clientes.add(info.getCliente());
                 }
             }

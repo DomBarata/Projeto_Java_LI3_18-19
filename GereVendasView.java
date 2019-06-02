@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -166,37 +167,50 @@ public class GereVendasView implements InterfGereVendasView {
     }
 
     public int submenuQuerie2(){
-
-        int op = 0;
-
+        out.println("Como quer a apresentação dos resultados?");
         out.println("1- Resultados globais");
         out.println("2- Resultados filial a filial");
-        op = lerInt();
 
-        return op;
-    }
-
-    public void printResQuerie2(int[] total){
-        out.println("Número total de vendas: " +total[0]+ "\nNúmero total de clientes: "+total[1]+"\n");
+        return lerInt();
     }
 
     public int getMes(){
-
         out.println("Mes: ");
-        int mes = lerInt();
 
-        return mes;
-    }
-
-    public int getNumFilial(){
-        out.println("Numero de filial: ");
-        int numFilial = lerInt();
-
-        return numFilial;
+        return lerInt();
     }
 
     public void printNumMesInvalido(){
         out.println("Numero de mês inválido!");
+        waiting();
+    }
+
+    public void printQuerie2Global(int[] total) {
+        out.println("Número total de vendas: " +total[0]+ "" +
+                "\nNúmero total de clientes: "+total[1]+"\n");
+        waiting();
+    }
+
+    public void printQuerie2Filial(Map<Integer, int[]> querie2) {
+        for(Map.Entry<Integer, int[]> entry : querie2.entrySet()){
+            out.println("---------FILIAL " + (entry.getKey()+1) + "---------");
+            out.println("Número de vendas: " + entry.getValue()[0]);
+            out.println("Número de clientes: " + entry.getValue()[1]);
+        }
+        waiting();
+    }
+
+    @Override
+    public String getCodCliente() {
+        out.println("Insira o código do cliente");
+
+        return lerString();
+    }
+
+    @Override
+    public void printInvalido(String cod) {
+        out.println("O código " + cod + " não existe");
+        waiting();
     }
 
     public void printOpInvalida(){

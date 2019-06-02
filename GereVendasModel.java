@@ -6,8 +6,6 @@ import java.util.*;
 import static java.lang.System.out;
 
 public class GereVendasModel implements InterfGereVendasModel {
-
-
     public static String CLIENTES;
     public static String PRODUTOS;
     public static String VENDAS;
@@ -132,18 +130,22 @@ public class GereVendasModel implements InterfGereVendasModel {
         return this.fact.getListaOrdenadaProdutosNuncaComprados(ctprods);
     }
 
-    public int[] querie2global(int mes) {
-        int[] total = new int[2];
-        for(InterfFilial f : filial) {
-            total[0] += f.totalVendasEClientesMes(mes)[0];
-            total[1] += f.totalVendasEClientesMes(mes)[1];
+    public Map<Integer, int[]> querie2(int mes) {
+        Map<Integer,int[]> total = new HashMap<>();
+        for(int i = 0; i < FILIAIS; i++){
+            total.put(i, filial.get(i).totalVendasEClientesMes(mes));
         }
+
         return total;
     }
 
-    public int[] querie2filial(int mes, int numFilial) {
-        int[] total = new int[2];
-        total = filial.get(numFilial).totalVendasEClientesMes(mes);
-        return total;
+    @Override
+    public boolean existeCodCliente(String codCli) {
+        return catcli.contains(codCli);
+    }
+
+    @Override
+    public boolean existeCodProd(String codProd) {
+        return ctprods.contains(codProd);
     }
 }

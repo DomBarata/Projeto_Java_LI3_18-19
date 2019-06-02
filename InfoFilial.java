@@ -42,6 +42,10 @@ public class InfoFilial {
         return quantidadeComprada;
     }
 
+    public int getQuantidadeComprada(int mes) {
+        return quantidadeComprada[mes];
+    }
+
     public void setQuantidadeComprada(int[] quantidadeComprada) {
         this.quantidadeComprada = quantidadeComprada;
     }

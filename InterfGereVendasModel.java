@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasModel {
@@ -5,6 +6,8 @@ public interface InterfGereVendasModel {
     void createData();
 
     Set<String> querie1();
-    int[] querie2global(int mes);
-    int[] querie2filial(int mes, int numFilial);
+    Map<Integer, int[]> querie2(int mes);
+
+    boolean existeCodCliente(String codCli);
+    boolean existeCodProd(String codProd);
 }
