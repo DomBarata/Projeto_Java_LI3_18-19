@@ -1,4 +1,3 @@
-
 import java.util.Set;
 
 import static java.lang.System.out;
@@ -27,7 +26,25 @@ public class GereVendasController implements InterfGereVendasController {
             {
                 case 1: Set<String> nuncaComprados = this.model.querie1();
                         this.view.printPaginacao(nuncaComprados);
-                case 2:
+                        break;
+                case 2: int[] total = new int[2];
+                        int mes = this.view.getMes();
+                        if(mes<1 || mes>12){
+                           this.view.printNumMesInvalido();
+                           break;
+                        }
+                        int opSub = this.view.submenuQuerie2();
+                        switch(opSub)
+                        {
+                            case 1: total = this.model.querie2global(mes-1);
+                                    break;
+                            case 2: total = this.model.querie2filial(mes-1,this.view.getNumFilial()-1);
+                                    break;
+                            default: this.view.printOpInvalida();
+                                    break;
+                        }
+                        this.view.printResQuerie2(total);
+                        break;
                 case 3:
                 case 4:
                 case 5:

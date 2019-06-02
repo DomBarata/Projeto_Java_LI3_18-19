@@ -53,8 +53,8 @@ public class GereVendasModel implements InterfGereVendasModel {
         i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
-                ctprods.adiciona(s);
-                i++;
+            ctprods.adiciona(s);
+            i++;
         }
         out.println(i); //teste
         i=0;
@@ -130,5 +130,20 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public Set<String> querie1(){
         return this.fact.getListaOrdenadaProdutosNuncaComprados(ctprods);
+    }
+
+    public int[] querie2global(int mes) {
+        int[] total = new int[2];
+        for(InterfFilial f : filial) {
+            total[0] += f.totalVendasEClientesMes(mes)[0];
+            total[1] += f.totalVendasEClientesMes(mes)[1];
+        }
+        return total;
+    }
+
+    public int[] querie2filial(int mes, int numFilial) {
+        int[] total = new int[2];
+        total = filial.get(numFilial).totalVendasEClientesMes(mes);
+        return total;
     }
 }

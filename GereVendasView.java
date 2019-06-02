@@ -40,8 +40,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             { out.println("Texto Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -60,8 +60,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             { out.println("Inteiro Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -79,8 +79,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             { out.println("Valor real Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -98,8 +98,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             { out.println("Valor real Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -117,8 +117,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             {out.println("Booleano Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -136,8 +136,8 @@ public class GereVendasView implements InterfGereVendasView {
             }
             catch(InputMismatchException e)
             { out.println("Short Invalido");
-            out.print("Novo valor: ");
-            input.nextLine();
+                out.print("Novo valor: ");
+                input.nextLine();
             }
         }
         //input.close();
@@ -165,14 +165,51 @@ public class GereVendasView implements InterfGereVendasView {
         return lerInt();
     }
 
+    public int submenuQuerie2(){
+
+        int op = 0;
+
+        out.println("1- Resultados globais");
+        out.println("2- Resultados filial a filial");
+        op = lerInt();
+
+        return op;
+    }
+
+    public void printResQuerie2(int[] total){
+        out.println("Número total de vendas: " +total[0]+ "\nNúmero total de clientes: "+total[1]+"\n");
+    }
+
+    public int getMes(){
+
+        out.println("Mes: ");
+        int mes = lerInt();
+
+        return mes;
+    }
+
+    public int getNumFilial(){
+        out.println("Numero de filial: ");
+        int numFilial = lerInt();
+
+        return numFilial;
+    }
+
+    public void printNumMesInvalido(){
+        out.println("Numero de mês inválido!");
+    }
+
+    public void printOpInvalida(){
+        out.println("Opção inválida!");
+    }
+
     public void printPaginacao(Set<String> set){
         waiting();
     }
 
     private void waiting(){
         try {
-            System.in.read();
-        }catch (IOException io){System.out.println(io);}
+            in.read();
+        }catch (IOException io){out.println(io);}
     }
 }
-
