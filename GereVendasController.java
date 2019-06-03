@@ -29,25 +29,24 @@ public class GereVendasController implements InterfGereVendasController {
                     this.view.printPaginacao(nuncaComprados);
                     break;
                 case 2: int[] total = new int[2];
-                    int mes = this.view.getMes();
-                    if(mes<1 || mes>12){
-                        this.view.printNumMesInvalido();
-                        break;
-                    }
-                    int opSub = this.view.submenuQuerie2();
-                    Map<Integer, int[]> res =  this.model.querie2(mes-1);
-                    if(opSub == 1){
-                        for(Map.Entry<Integer, int[]> entry: res.entrySet()) {
-                            total[0] += entry.getValue()[0];
-                            total[1] += entry.getValue()[1];
+                        int mes = this.view.getMes();
+                        if(mes<1 || mes>12){
+                            this.view.printNumMesInvalido();
+                            break;
                         }
-                        this.view.printQuerie2Global(total);
-                    }else if(opSub == 2){
-                        this.view.printQuerie2Filial(this.model.querie2(mes-1));
-                    }else{
-                        this.view.printOpInvalida();
-                    }
-                    break;
+                        int opSub = this.view.submenuQuerie2();
+                        if(opSub == 1){
+                            total = this.model.querie2(mes);
+                            this.view.printQuerie2(total);
+                        }else if(opSub == 2){
+                            for(int i = 0; i < this.model.getFILIAIS(); i++){
+                                total = this.model.querie2(mes,i);
+                                this.view.printQuerie2(total,i);
+                            }
+                        }else{
+                            this.view.printOpInvalida();
+                        }
+                        break;
                 case 3: String cod = this.view.getCodCliente();
                     if(this.model.existeCodCliente(cod)){
 

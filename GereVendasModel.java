@@ -15,7 +15,6 @@ public class GereVendasModel implements InterfGereVendasModel {
     private InterfCatClientes catcli;
     private InterfFaturacao fact;
     private List<InterfFilial> filial;
-    private int[] numVendas = new int[12];
 
     public GereVendasModel(){
         List<String> files = lerAllLines("configs.txt");
@@ -24,7 +23,6 @@ public class GereVendasModel implements InterfGereVendasModel {
         setVENDAS(files.get(2));
         setFILIAIS(Integer.parseInt(files.get(3)));
         files.clear();
-
 
         ctprods = new CatProds();
         catcli = new CatClientes();
@@ -65,9 +63,9 @@ public class GereVendasModel implements InterfGereVendasModel {
                 InterfFilial f = filial.get(venda.getFilial()-1);
                 f.adiciona(venda);
                 fact.adiciona(venda);
-                numVendas[venda.getMes()-1]++;
                 i++;
             }
+         //   out.println(i);
         }
         out.println(i); //teste
     }
@@ -130,11 +128,32 @@ public class GereVendasModel implements InterfGereVendasModel {
         return this.fact.getListaOrdenadaProdutosNuncaComprados(ctprods);
     }
 
-    public Map<Integer, int[]> querie2(int mes) {
-        Map<Integer,int[]> total = new HashMap<>();
+    public int[] querie2(int mes) {
+        Set<String> clientes = new TreeSet<>();
+        int total[] = new int[2];
+
         for(int i = 0; i < FILIAIS; i++){
-           // total.put(i, filial.get(i).totalVendasEClientesMes(mes));
+            Map<Integer, Set<String>> fil = new HashMap<>(filial.get(i).totalVendasEClientesMes(mes));
+            for(Map.Entry<Integer, Set<String>> entry : fil.entrySet()){
+                clientes.addAll(entry.getValue());
+                total[0] += entry.getKey();
+            }
+            total[1] = clientes.size();
         }
+        return total;
+    }
+
+    public int[] querie2(int mes, int fil){
+        Set<String> clientes = new TreeSet<>();
+        int total[] = new int[2];
+
+        Map<Integer, Set<String>> fili = new HashMap<>(filial.get(fil).totalVendasEClientesMes(mes));
+        for(Map.Entry<Integer, Set<String>> entry : fili.entrySet()){
+            clientes.addAll(entry.getValue());
+            total[0] += entry.getKey();
+        }
+        total[1] = clientes.size();
+
         return total;
     }
 
@@ -166,5 +185,10 @@ public class GereVendasModel implements InterfGereVendasModel {
     @Override
     public boolean existeCodProd(String codProd) {
         return ctprods.contains(codProd);
+    }
+
+    @Override
+    public int getFILIAIS() {
+        return this.FILIAIS;
     }
 }

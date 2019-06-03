@@ -1,7 +1,9 @@
+import java.util.Map;
+import java.util.Set;
 
 public interface InterfFilial {
     void adiciona(InterfVenda venda);
 
-//int[] vezesProdComprado(String codProd);
-  //  int[] clientesProd(String codProd);
+    Map<Integer, Set<String>> totalVendasEClientesMes(int mes);
+
 }

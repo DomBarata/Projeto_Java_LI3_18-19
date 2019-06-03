@@ -14,9 +14,9 @@ public interface InterfGereVendasView {
 
     void printNumMesInvalido();
 
-    void printQuerie2Global(int[] total);
+    void printQuerie2(int[] total);
 
-    void printQuerie2Filial(Map<Integer,int[]> querie2);
+    void printQuerie2(int[] total, int fil);
 
     String getCodCliente();
 

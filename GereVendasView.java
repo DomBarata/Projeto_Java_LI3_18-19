@@ -185,18 +185,17 @@ public class GereVendasView implements InterfGereVendasView {
         waiting();
     }
 
-    public void printQuerie2Global(int[] total) {
+    public void printQuerie2(int[] total) {
         out.println("Número total de vendas: " +total[0]+ "" +
                 "\nNúmero total de clientes: "+total[1]+"\n");
         waiting();
     }
 
-    public void printQuerie2Filial(Map<Integer, int[]> querie2) {
-        for(Map.Entry<Integer, int[]> entry : querie2.entrySet()){
-            out.println("---------FILIAL " + (entry.getKey()+1) + "---------");
-            out.println("Número de vendas: " + entry.getValue()[0]);
-            out.println("Número de clientes: " + entry.getValue()[1]);
-        }
+    public void printQuerie2(int[] total, int fil) {
+        out.println("---------FILIAL " + (fil+1) + "---------");
+        out.println("Número de vendas: " + total[0]);
+        out.println("Número de clientes: " + total[1]);
+
         waiting();
     }
 
