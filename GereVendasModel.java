@@ -63,9 +63,7 @@ public class GereVendasModel implements InterfGereVendasModel {
             if(verificaVenda(venda)) {
                 this.fact.adiciona(venda);
                 InterfFilial f = filial.get(venda.getFilial()-1);
-                filial.remove(venda.getFilial()-1);
                 f.adiciona(venda);
-                filial.add(venda.getFilial()-1, f);
                 fact.adiciona(venda);
                 numVendas[venda.getMes()-1]++;
                 i++;
@@ -135,7 +133,7 @@ public class GereVendasModel implements InterfGereVendasModel {
     public Map<Integer, int[]> querie2(int mes) {
         Map<Integer,int[]> total = new HashMap<>();
         for(int i = 0; i < FILIAIS; i++){
-            total.put(i, filial.get(i).totalVendasEClientesMes(mes));
+           // total.put(i, filial.get(i).totalVendasEClientesMes(mes));
         }
         return total;
     }
@@ -144,7 +142,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         int[] total = new int[12];
         for(InterfFilial f: filial){
             for(int i=0; i<12; i++){
-                total[i] += f.vezesProdComprado(codProd)[i];
+                //total[i] += f.vezesProdComprado(codProd)[i];
             }
         }
         return total;
@@ -154,7 +152,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         int[] total = new int[12];
         for(InterfFilial f: filial){
             for(int i=0; i<12; i++){
-                total[i] += f.clientesProd(codProd)[i];
+                //total[i] += f.clientesProd(codProd)[i];
             }
         }
         return total;

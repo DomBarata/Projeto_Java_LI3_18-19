@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfoFilial {
-    String cliente;
-    int quantidadeComprada;
-    int numVendas;
+    private String cliente;
+    private int quantidadeComprada;
+    private int numVendas;
 
     public InfoFilial(String cliente, int quantidadeComprada) {
         this.cliente = cliente;
@@ -18,9 +18,10 @@ public class InfoFilial {
         this.numVendas = i.getNumVendas();
     }
 
-    public InfoFilial(String codCli) {
-        this.cliente = codCli;
+    public InfoFilial(){
+        this.cliente = "";
         this.quantidadeComprada = 0;
+        this.numVendas = 0;
     }
 
     public String getCliente() {
@@ -57,6 +58,10 @@ public class InfoFilial {
 
     public InfoFilial clone(){
         return new InfoFilial(this);
+    }
+
+    public void adicionaQuantidade(int qtd){
+        this.quantidadeComprada += qtd;
     }
 
 }
