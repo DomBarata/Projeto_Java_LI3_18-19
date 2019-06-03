@@ -54,6 +54,11 @@ public class Venda implements InterfVenda, Serializable {
 
     public double getPreco() { return preco; }
 
+    @Override
+    public boolean isPromo() {
+        return this.tipo.equals("P");
+    }
+
     public Venda clone() {
         return new Venda(this);
     }
