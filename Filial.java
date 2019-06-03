@@ -1,65 +1,68 @@
 import java.util.*;
 
 public class Filial implements InterfFilial{
-    //key produto, value set com todas as informacoes necessarias
-    private Map<String, List<InfoFilial>> produtos;
+    //key produto, value map com key mes e value informacoes necessarias
+    private Map<String, Map<Integer,List<InfoFilial>>> normal;
+    private Map<String, Map<Integer,List<InfoFilial>>> promo;
+    private boolean flag = true;
 
     public Filial(){
-        this.produtos = new HashMap<>();
+        this.normal = new HashMap<>();
+        this.promo = new HashMap<>();
     }
 
     public void adiciona(InterfVenda venda) {
-        if(this.produtos.containsKey(venda.getCodPro())){//se o mapa já tiver esse produto
-            List<InfoFilial> clientes = this.produtos.get(venda.getCodPro()); //todos os clientes
-            // que já compraram esse produto
-            InfoFilial info = new InfoFilial(venda.getCodCli());
-            if(clientes.contains(info)){//se ja tiver um produto com o mesmo codigo de cliente
-                //ir buscar esse info
-                info = clientes.get(clientes.indexOf(info));
-
-                // adicionar info
-                boolean[] promo = info.getPromo();
-                if(venda.getTipo().equals("P")) {
-                    promo[venda.getMes()-1] = true;
-                }else{
-                    promo[venda.getMes()-1] = false;
+        if(venda.isPromo()){
+            if(this.promo.containsKey(venda.getCodPro())){ //mapa contem produto
+                Map<Integer, List<InfoFilial>> meses = this.promo.get(venda.getCodPro());
+                List<InfoFilial> clientes = meses.get(venda.getMes()-1);
+                Iterator<InfoFilial> it = clientes.iterator();
+                while(it.hasNext() && flag){
+                    InfoFilial a = it.next();
+                    if(a.getCliente().equals(venda.getCodCli())){
+                        flag = false;
+                        a.incrementaNumVendas();
+                        a.setQuantidadeComprada(a.getQuantidadeComprada()+venda.getQuant());
+                    }
                 }
-                info.setPromo(promo);
-
-                int[] quantidadeComprada = info.getQuantidadeComprada();
-                quantidadeComprada[venda.getMes()-1] = venda.getQuant();
-                info.setQuantidadeComprada(quantidadeComprada);
-
-                info.incrementaNumVendas(venda.getMes());
-
-                //reinserir info na list
-                clientes.set(clientes.indexOf(info),info);
-                //reinserir list no map
-                produtos.put(venda.getCodPro(),clientes);
+                if(flag){
+                    InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                    clientes.add(infoNovo);
+                }
             }else{
-                //criar nova info
-                boolean[] promo = new boolean[12];
-                promo[venda.getMes()-1] = venda.getTipo().equals("P");
-                info.setPromo(promo);
-
-                int[] quantidadeComprada = new int[12];
-                quantidadeComprada[venda.getMes()-1] = venda.getQuant();
-                info.setQuantidadeComprada(quantidadeComprada);
-
-                int[] numVendas = new int[12];
-                numVendas[venda.getMes()-1] = 1;
-                info.setNumVendas(numVendas);
-
-                //inserir numa lista
-                clientes.add(info);
-                //inserir lisa no map
-                produtos.put(venda.getCodPro(),clientes);
+                Map<Integer, List<InfoFilial>> meses = this.promo.get(venda.getCodPro());
+                List<InfoFilial> clientes = new ArrayList<>();
+                InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                clientes.add(infoNovo);
+                meses.put(venda.getMes()-1,clientes);
+                this.promo.put(venda.getCodPro(),meses);
             }
-        }else{//Se o mapa nao tiver esse produto
-            List<InfoFilial> clientes = new ArrayList<>();
-            clientes.add(new InfoFilial(venda.getCodCli(), venda.getQuant(),
-                    venda.getMes(), venda.getTipo().equals("P")));
-            this.produtos.put(venda.getCodPro(), clientes);
+        }
+        else {
+            if(this.normal.containsKey(venda.getCodPro())) { //mapa contem produto
+                Map<Integer, List<InfoFilial>> meses = this.normal.get(venda.getCodPro());
+                List<InfoFilial> clientes = meses.get(venda.getMes()-1);
+                Iterator<InfoFilial> it = clientes.iterator();
+                while(it.hasNext() && flag){
+                    InfoFilial a = it.next();
+                    if(a.getCliente().equals(venda.getCodCli())){
+                        flag = false;
+                        a.incrementaNumVendas();
+                        a.setQuantidadeComprada(a.getQuantidadeComprada()+venda.getQuant());
+                    }
+                }
+                if(flag){
+                    InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                    clientes.add(infoNovo);
+                }
+            }else{
+                Map<Integer, List<InfoFilial>> meses = this.normal.get(venda.getCodPro());
+                List<InfoFilial> clientes = new ArrayList<>();
+                InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                clientes.add(infoNovo);
+                meses.put(venda.getMes()-1,clientes);
+                this.normal.put(venda.getCodPro(),meses);
+            }
         }
     }
 
@@ -68,29 +71,44 @@ public class Filial implements InterfFilial{
         int[] totalVendasEClientes = new int[2];
         Set<String> clientes = new HashSet<>();
 
-        for(List<InfoFilial> l: this.produtos.values()){
-            for(InfoFilial info: l){
-                if(info.getQuantidadeComprada(mes) > 0) {
-                    totalVendasEClientes[0] += info.getNumVendas(mes);
-                    clientes.add(info.getCliente());
+        for(Map<Integer,List<InfoFilial>> entry: this.normal.values()) {
+            for (List<InfoFilial> l : entry.values()) {
+                for (InfoFilial info : l) {
+                    if (info.getQuantidadeComprada() > 0) {
+                        totalVendasEClientes[0] += info.getNumVendas();
+                        clientes.add(info.getCliente());
+                    }
                 }
+                totalVendasEClientes[1] = clientes.size();
             }
-            totalVendasEClientes[1] = clientes.size();
         }
+        for(Map<Integer,List<InfoFilial>> entry: this.promo.values()) {
+            for (List<InfoFilial> l : entry.values()) {
+                for (InfoFilial info : l) {
+                    if (info.getQuantidadeComprada() > 0) {
+                        totalVendasEClientes[0] += info.getNumVendas();
+                        clientes.add(info.getCliente());
+                    }
+                }
+                totalVendasEClientes[1] = clientes.size();
+            }
+        }
+
         return totalVendasEClientes;
     }
-
+/*
     public int[] vezesProdComprado(String codProd){
-        List<InfoFilial> info = this.produtos.get(codProd);
+        Map<Integer,List<InfoFilial>> = this.normal.get(codProd);
+        List<InfoFilial> info = ;
         int[] vezesComprado = new int[12];
 
-/*      //se numero de vezes comprado for a quantidade
+        //se numero de vezes comprado for a quantidade
         for(InfoFilial iF: info){
             for(int i = 0; i < 12; i++){
                 vezesComprado[i] += iF.getQuantidadeComprada(i);
             }
         }
-*/
+/*
         //se numero de vezes comprado for numero de vendas
         for(InfoFilial iF: info){
             for(int i = 0; i < 12; i++){
@@ -115,4 +133,5 @@ public class Filial implements InterfFilial{
         }
         return total;
     }
+    */
 }
