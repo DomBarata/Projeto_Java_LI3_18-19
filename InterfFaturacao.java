@@ -1,5 +1,3 @@
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface InterfFaturacao {
@@ -7,6 +5,5 @@ public interface InterfFaturacao {
 
     Set<String> getListaOrdenadaProdutosNuncaComprados(InterfCatProds catpro);
     double getTotalFaturadoProd(String codProd);
-
-    List<Double> totalfaturado(Map<String,int[]> prodsQuantNormal, Map<String,int[]> prodsQuantPromo);
+    double getTotalFaturado(String prod, int[] quant, int mes);
 }
