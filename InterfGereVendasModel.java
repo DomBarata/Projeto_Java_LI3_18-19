@@ -12,9 +12,9 @@ public interface InterfGereVendasModel {
     int[] querie2(int mes);
     int[] querie2(int mes, int fil);
 
-    List<Integer> getTotalComprasCliente(String codCliente);
-    List<Integer> getTotalProds(String codCliente);
-    List<Double> getTotalGasto(String codCliente);
+    List<Integer> Querie3TotalComprasCliente(String codCliente);
+    List<Integer> Querie3TotalProds(String codCliente);
+    List<Double> Querie3TotalGasto(String codCliente);
 
     List<Integer> querie4getQuantidade(String prod);
     List<Integer> querie4getClientes(String prod);

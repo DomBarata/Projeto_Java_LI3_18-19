@@ -11,12 +11,13 @@ public interface InterfFilial {
     int[] getQuantidadePorTipoProduto(String prod, int mes);
 
     Set<String> getClientes(String prod, int mes);
+    Set<String> getProdutos(String codCliente, int mes);
 
-    int[] totalCompras(String codCliente);
-
-    int[] totalProds(String codCliente);
+    int totalCompras(String codCliente, int mes);
 
     Map<String,int[]> prodsQuantNormal(String codCliente);
 
     Map<String,int[]> prodsQuantPromo(String codCliente);
+
+
 }

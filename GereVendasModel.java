@@ -29,7 +29,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         fact = new Faturacao();
         filial = new ArrayList<>(FILIAIS);
         for (int i = 0; i < FILIAIS; i++)
-            filial.add(0,new Filial());
+            filial.add(i,new Filial());
     }
 
     public void createData() {
@@ -200,31 +200,33 @@ public class GereVendasModel implements InterfGereVendasModel {
         return meses;
     }
 
-    public List<Integer> getTotalComprasCliente(String codCliente){
+    public List<Integer> Querie3TotalComprasCliente(String codCliente){
         List<Integer> compras = new ArrayList<>(12);
-        int total = 0;
-        for(int i=0; i<12; i++){
-            for(int fil=0; fil<FILIAIS; fil++){
-                total += this.filial.get(fil).totalCompras(codCliente)[i];
+        int total;
+        for(int mes=0; mes<12; mes++){
+            total = 0;
+            for(InterfFilial fil:filial){
+                total += fil.totalCompras(codCliente, mes);
             }
-            compras.add(i,total);
+            compras.add(mes,total);
         }
         return compras;
     }
 
-    public List<Integer> getTotalProds(String codCliente){
+    public List<Integer> Querie3TotalProds(String codCliente){
         List<Integer> prods = new ArrayList<>(12);
-        int total = 0;
-        for(int i=0; i<12; i++){
-            for(int fil=0; fil<FILIAIS; fil++){
-                total += this.filial.get(fil).totalProds(codCliente)[i];
+        Set<String> aux = new TreeSet<>();
+        for(int mes = 0; mes < 12; mes++){
+            aux.clear();
+            for(InterfFilial fil: filial){
+                aux.addAll(fil.getProdutos(codCliente, mes));
             }
-            prods.add(i,total);
+            prods.add(mes,aux.size());
         }
         return prods;
     }
 
-    public List<Double> getTotalGasto(String codCliente){
+    public List<Double> Querie3TotalGasto(String codCliente){
         List<Double> gasto = new ArrayList<>(12);
         Map<String, int[]> prodsQuantNormal = new HashMap<>();
         for(int fil=0; fil<FILIAIS; fil++){
