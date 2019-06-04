@@ -106,4 +106,29 @@ public class Faturacao implements InterfFaturacao{
         }
         return sb.toString();
     }
+
+    public List<Double> totalfaturado(Map<String,int[]> prodsQuantNormal, Map<String,int[]> prodsQuantPromo){
+        List<Double> total = new ArrayList<>(12);
+        for(int i=0; i<12; i++){
+            total.add(i,0.0);
+        }
+        for (Map.Entry<String,int[]> entry: prodsQuantNormal.entrySet()){
+            for(int i=0; i<12; i++){
+                if(total.get(i) != null && this.normal.get(entry.getKey())[i] != null && entry.getValue() != null){
+                    double faturado = total.get(i) + (this.normal.get(entry.getKey())[i].getPrecoUnitario()) * entry.getValue()[i];
+                    total.set(i, faturado);
+                }
+            }
+        }
+        for (Map.Entry<String,int[]> entry: prodsQuantPromo.entrySet()){
+            for(int i=0; i<12; i++){
+                if(total.get(i) != null && this.promo.get(entry.getKey())[i] != null && entry.getValue() != null){
+                    double faturado = total.get(i) + (this.promo.get(entry.getKey())[i].getPrecoUnitario()) * entry.getValue()[i];
+                    total.set(i, faturado);
+                }
+            }
+        }
+        return total;
+    }
+
 }

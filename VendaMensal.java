@@ -38,11 +38,12 @@ public class VendaMensal {
         this.totalFaturado += qtd*preco;
     }
 
-    public VendaMensal clone() {
-        return new VendaMensal(this);
-    }
-
     public double getPrecoUnitario() {
         return this.totalFaturado/this.nVendas;
+    }
+
+
+    public VendaMensal clone() {
+        return new VendaMensal(this);
     }
 }

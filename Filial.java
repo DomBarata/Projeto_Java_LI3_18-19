@@ -190,4 +190,92 @@ public class Filial implements InterfFilial{
         }
         return sb.toString();
     }
+
+    public int[] totalCompras(String codCliente){
+        int[] total = new int[12];
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()){
+                Set<InfoFilial> info = entry2.getValue();
+                for (InfoFilial infoFil : info) {
+                    if (infoFil.getCliente().equals(codCliente)) {
+                        total[entry2.getKey()] += infoFil.getNumVendas();
+                    }
+                }
+            }
+        }
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : promo.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()){
+                Set<InfoFilial> info = entry2.getValue();
+                    for (InfoFilial infoFil : info) {
+                        if (infoFil.getCliente().equals(codCliente)) {
+                            total[entry2.getKey()] += infoFil.getNumVendas();
+                        }
+                    }
+            }
+        }
+        return total;
+    }
+
+    public int[] totalProds(String codCliente){
+        int[] total = new int[12];
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
+                Set<InfoFilial> info = entry2.getValue();
+                Set<String> prods = new HashSet<>();
+                    for (InfoFilial infoFil : info) {
+                        if (infoFil.getCliente().equals(codCliente)) {
+                            prods.add(entry.getKey());
+                        }
+                    }
+                    total[entry2.getKey()] += prods.size();
+            }
+        }
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry  : promo.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
+                Set<InfoFilial> info = entry2.getValue();
+                Set<String> prods = new HashSet<>();
+                    for (InfoFilial infoFil : info) {
+                        if (infoFil.getCliente().equals(codCliente)) {
+                            prods.add(entry.getKey());
+                        }
+                    }
+                    total[entry2.getKey()] += prods.size();
+            }
+        }
+        return total;
+    }
+
+    public Map<String,int[]> prodsQuantNormal(String codCliente) {
+        Map<String,int[]> total = new HashMap<>();
+        int[] quant = new int[12];
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : this.normal.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
+                Set<InfoFilial> info = entry2.getValue();
+                for (InfoFilial infoFil : info) {
+                    if (infoFil.getCliente().equals(codCliente)) {
+                        quant[entry2.getKey()] += infoFil.getQuantidadeComprada();
+                        total.put(entry.getKey(),quant);
+                    }
+                }
+            }
+        }
+        return total;
+    }
+    public Map<String,int[]> prodsQuantPromo(String codCliente) {
+        Map<String,int[]> total = new HashMap<>();
+        int[] quant = new int[12];
+        for (Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry  : this.promo.entrySet()) {
+            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
+                Set<InfoFilial> info = entry2.getValue();
+                for (InfoFilial infoFil : info) {
+                    if (infoFil.getCliente().equals(codCliente)) {
+                        quant[entry2.getKey()] += infoFil.getQuantidadeComprada();
+                        total.put(entry.getKey(),quant);
+                    }
+                }
+            }
+        }
+        return total;
+    }
+
 }

@@ -6,8 +6,11 @@ public interface InterfFilial {
 
     Map<Integer, Set<String>> totalVendasEClientesMes(int mes);
 
-    int getQuantidadeTotalProduto(String prod, int mes);
+    int[] totalCompras(String codCliente);
 
-    int[] getQuantidadePorTipoProduto(String prod, int mes);
-    Set<String> getClientes(String prod, int mes);
+    int[] totalProds(String codCliente);
+
+    Map<String,int[]> prodsQuantNormal(String codCliente);
+
+    Map<String,int[]> prodsQuantPromo(String codCliente);
 }
