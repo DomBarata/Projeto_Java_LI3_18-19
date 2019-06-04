@@ -2,8 +2,8 @@ import java.util.*;
 
 public class Filial implements InterfFilial{
     //key produto, value map com key mes e value informacoes necessarias
-    private Map<String, Set<InfoFilial>[]> normal;
-    private Map<String, Set<InfoFilial>[]> promo;
+    private Map<String, Map<Integer,Set<InfoFilial>>> normal;
+    private Map<String, Map<Integer,Set<InfoFilial>>> promo;
 
     public Filial(){
         this.normal = new HashMap<>();
@@ -12,19 +12,26 @@ public class Filial implements InterfFilial{
 
     public void adiciona(InterfVenda venda) {
         if(venda.isPromo()){
+
             if(this.promo.containsKey(venda.getCodPro())){ //mapa contem produto
-                Set<InfoFilial>[] meses = this.promo.get(venda.getCodPro());
-                Set<InfoFilial> clientes = meses[venda.getMes()-1];
-                if(clientes!=null){
+                if(venda.getCodPro().equals("BG1609"))
+                    System.out.println("Promo existe");
+                Map<Integer,Set<InfoFilial>> meses = this.promo.get(venda.getCodPro());
+                Set<InfoFilial> clientes = meses.get(venda.getMes()-1);
+                if(clientes!=null){//mes já iniciado
                     Iterator<InfoFilial> it = clientes.iterator();
                     boolean flag = true;
-                    while(it.hasNext() && flag){
+                    while(it.hasNext() && flag) {
                         InfoFilial a = it.next();
-                        if(a.getCliente().equals(venda.getCodCli())){
+                        if (a.getCliente().equals(venda.getCodCli())) {
                             flag = false;
                             a.incrementaNumVendas();
                             a.adicionaQuantidade(venda.getQuant());
                         }
+                    }
+                    if(flag){
+                        InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                        clientes.add(infoNovo);
                     }
                 }else{
                     clientes = new HashSet<>();
@@ -33,17 +40,21 @@ public class Filial implements InterfFilial{
                 }
 
             }else{//O map não tem o produto
+                if(venda.getCodPro().equals("BG1609"))
+                    System.out.println("Nova Promo");
                 Set<InfoFilial> info = new HashSet<>();
                 info.add(new InfoFilial(venda.getCodCli(), venda.getQuant()));
-                Set<InfoFilial>[] meses = new Set[12];
-                meses[venda.getMes()-1] = info;
+                Map<Integer,Set<InfoFilial>> meses = new HashMap<>(12);
+                meses.put(venda.getMes()-1, info);
                 promo.put(venda.getCodPro(), meses);
             }
         }else{
             if(this.normal.containsKey(venda.getCodPro())){ //mapa contem produto
-                Set<InfoFilial>[] meses = this.normal.get(venda.getCodPro());
+                if(venda.getCodPro().equals("BG1609"))
+                    System.out.println("Normal existe");
+                Map<Integer,Set<InfoFilial>> meses = this.normal.get(venda.getCodPro());
                 //verificar a existencia do cliente no Set
-                Set<InfoFilial> clientes = meses[venda.getMes()-1];
+                Set<InfoFilial> clientes = meses.get(venda.getMes()-1);
                 if(clientes!=null){
                     Iterator<InfoFilial> it = clientes.iterator();
                     boolean flag = true;
@@ -55,16 +66,22 @@ public class Filial implements InterfFilial{
                             a.adicionaQuantidade(venda.getQuant());
                         }
                     }
+                    if(flag){
+                        InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
+                        clientes.add(infoNovo);
+                    }
                 }else{
                     clientes = new HashSet<>();
                     InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
                     clientes.add(infoNovo);
                 }
             }else{//O map não tem o produto
+                if(venda.getCodPro().equals("BG1609"))
+                    System.out.println("Normal Nova");
                 Set<InfoFilial> info = new HashSet<>();
                 info.add(new InfoFilial(venda.getCodCli(), venda.getQuant()));
-                Set<InfoFilial>[] meses = new Set[12];
-                meses[venda.getMes()-1] = info;
+                Map<Integer,Set<InfoFilial>> meses = new HashMap<>(12);
+                meses.put(venda.getMes()-1, info);
                 normal.put(venda.getCodPro(), meses);
             }
         }
@@ -73,8 +90,8 @@ public class Filial implements InterfFilial{
     public Map<Integer, Set<String>> totalVendasEClientesMes(int mes) {
         int total = 0;
         Set<String> clientes = new TreeSet<>();
-        for(Map.Entry<String, Set<InfoFilial>[]> entry : normal.entrySet()){
-            Set<InfoFilial> info = entry.getValue()[mes-1];
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()){
+            Set<InfoFilial> info = entry.getValue().get(mes-1);
             if(info != null) {
                 for (InfoFilial i : info) {
                     clientes.add(i.getCliente());
@@ -82,8 +99,8 @@ public class Filial implements InterfFilial{
                 }
             }
         }
-        for(Map.Entry<String, Set<InfoFilial>[]> entry : promo.entrySet()){
-            Set<InfoFilial> info = entry.getValue()[mes-1];
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : promo.entrySet()){
+            Set<InfoFilial> info = entry.getValue().get(mes-1);
             if(info != null) {
                 for (InfoFilial i : info) {
                     clientes.add(i.getCliente());
@@ -94,5 +111,83 @@ public class Filial implements InterfFilial{
         Map<Integer, Set<String>> ret = new HashMap<>();
         ret.put(total, clientes);
         return ret;
+    }
+
+    public int getQuantidadeTotalProduto(String prod, int mes) {
+        int quantidade = 0;
+        if(normal.containsKey(prod)){
+            Set<InfoFilial> info = normal.get(prod).get(mes);
+            if(info != null) {
+                for (InfoFilial in : info) {
+                    quantidade += in.getQuantidadeComprada();
+                }
+            }
+        }
+        if(promo.containsKey(prod)){
+            Set<InfoFilial> info = promo.get(prod).get(mes);
+            if(info != null) {
+                for (InfoFilial in : info) {
+                    quantidade += in.getQuantidadeComprada();
+                }
+            }
+        }
+        return quantidade;
+    }
+
+    public int[] getQuantidadePorTipoProduto(String prod, int mes) {
+        int[] total = new int[2];
+        if(normal.containsKey(prod)){
+            Set<InfoFilial> info = normal.get(prod).get(mes);
+            if(info != null) {
+                for (InfoFilial i : info) {
+                    total[0] += i.getQuantidadeComprada();
+                }
+            }
+        }
+        if(promo.containsKey(prod)){
+            Set<InfoFilial> info = promo.get(prod).get(mes);
+            if(info != null) {
+                for (InfoFilial in : info) {
+                    total[1] += in.getQuantidadeComprada();
+                }
+            }
+        }
+        return total;
+    }
+
+    public Set<String> getClientes(String prod, int mes){
+        Set<String> clientes = new TreeSet<>();
+        if(normal.containsKey(prod)){
+            Set<InfoFilial> infos = normal.get(prod).get(mes);
+            if(infos != null) {
+                for (InfoFilial info : infos) {
+                    clientes.add(info.getCliente());
+                }
+            }
+        }
+        if(promo.containsKey(prod)){
+            Set<InfoFilial> infos = promo.get(prod).get(mes);
+            if(infos != null) {
+                for (InfoFilial info : infos) {
+                    clientes.add(info.getCliente());
+                }
+            }
+        }
+        return clientes;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : promo.entrySet()){
+            sb.append("----------Produto: ").append(entry.getKey()).append("------------\n");
+            Map<Integer,Set<InfoFilial>> meses = entry.getValue();
+            for(Map.Entry<Integer,Set<InfoFilial>> infos : meses.entrySet()){
+                for (InfoFilial inf : infos.getValue()) {
+                    sb.append(inf.getCliente() + "," + inf.getQuantidadeComprada() + "\n");
+                }
+            }
+        }
+        return sb.toString();
     }
 }

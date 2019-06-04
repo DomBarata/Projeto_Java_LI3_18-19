@@ -41,4 +41,8 @@ public class VendaMensal {
     public VendaMensal clone() {
         return new VendaMensal(this);
     }
+
+    public double getPrecoUnitario() {
+        return this.totalFaturado/this.nVendas;
+    }
 }

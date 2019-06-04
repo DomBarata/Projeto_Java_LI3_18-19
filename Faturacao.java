@@ -22,7 +22,9 @@ public class Faturacao implements InterfFaturacao{
                     v.insertVenda(venda.getQuant(), venda.getPreco());
                 }else{
                     v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                    lista[venda.getMes()-1] = v;
                 }
+
             }else{//caso contrario
                 //Inicializar lista de meses
                 VendaMensal[] meses = new VendaMensal[12];
@@ -40,6 +42,7 @@ public class Faturacao implements InterfFaturacao{
                     v.insertVenda(venda.getQuant(), venda.getPreco());
                 }else{
                     v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                    lista[venda.getMes()-1] = v;
                 }
             }else{//caso contrario
                 //Inicializar lista de meses
@@ -69,4 +72,38 @@ public class Faturacao implements InterfFaturacao{
         return 0;
     }
 
+
+    public double getTotalFaturado(String prod, int[] quant, int mes){
+        double total[] = new double[2];
+        if(normal.containsKey(prod)){
+            VendaMensal venda = normal.get(prod)[mes];
+            if(venda != null)
+                total[0] = quant[0] * venda.getPrecoUnitario();
+        }
+        if(promo.containsKey(prod)){
+            VendaMensal venda = promo.get(prod)[mes];
+            if(venda != null)
+                total[1] = quant[1] * venda.getPrecoUnitario();
+        }
+        return total[0]+total[1];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(Map.Entry<String, VendaMensal[]> entry : normal.entrySet()){
+            sb.append("Produto:").append(entry.getKey()).append("\n");
+            VendaMensal[] vendas = entry.getValue();
+            if(vendas!=null){
+                int i = 0;
+                for(VendaMensal v:vendas){
+                    i++;
+                    if(v!=null)
+                        sb.append("venda:" + v.getnVendas() + ", " + v.getTotalFaturado() + ", " + i +"\n");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

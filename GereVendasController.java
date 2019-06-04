@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,8 +55,14 @@ public class GereVendasController implements InterfGereVendasController {
                         this.view.printInvalido(cod);
                     }
                     break;
-                case 4:
-                case 5:
+                case 4: String prod = this.view.getCodProduto();
+                        this.view.printMes(this.model.querie4getClientes(prod),
+                                this.model.querie4getQuantidade(prod),
+                                this.model.querie4getTotalFaturado(prod));
+                case 5: List<InterfFilial> fil = this.model.getFil();
+                        for(InterfFilial f:fil) {
+                            out.println(f);
+                        }
                 case 6:
                 case 7:
                 case 8:

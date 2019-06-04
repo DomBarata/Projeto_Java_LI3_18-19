@@ -5,4 +5,5 @@ public interface InterfFaturacao {
 
     Set<String> getListaOrdenadaProdutosNuncaComprados(InterfCatProds catpro);
     double getTotalFaturadoProd(String codProd);
+    double getTotalFaturado(String prod, int[] quant, int mes);
 }

@@ -91,11 +91,13 @@ public class GereVendasModel implements InterfGereVendasModel {
             mes = Integer.parseInt(campos[5]);
             filial = Integer.parseInt(campos[6]);
         }
-        catch (InputMismatchException exc){return null;}
+        catch (InputMismatchException exc){
+            if(codPro.equals("JU1146"))
+                out.println("Venda Inválida");
+            return null;}
 
         if(mes < 1 || mes > 12) return null;
         if(filial < 1 || filial > FILIAIS) return null;
-
         return new Venda(codPro, codCli, tipo, mes, filial, quant, preco);
     }
 
@@ -130,7 +132,7 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public int[] querie2(int mes) {
         Set<String> clientes = new TreeSet<>();
-        int total[] = new int[2];
+        int[] total = new int[2];
 
         for(int i = 0; i < FILIAIS; i++){
             Map<Integer, Set<String>> fil = new HashMap<>(filial.get(i).totalVendasEClientesMes(mes));
@@ -145,9 +147,9 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public int[] querie2(int mes, int fil){
         Set<String> clientes = new TreeSet<>();
-        int total[] = new int[2];
+        int[] total = new int[2];
 
-        Map<Integer, Set<String>> fili = new HashMap<>(filial.get(fil).totalVendasEClientesMes(mes));
+        Map<Integer, Set<String>> fili = new HashMap<>(this.filial.get(fil).totalVendasEClientesMes(mes));
         for(Map.Entry<Integer, Set<String>> entry : fili.entrySet()){
             clientes.addAll(entry.getValue());
             total[0] += entry.getKey();
@@ -157,38 +159,66 @@ public class GereVendasModel implements InterfGereVendasModel {
         return total;
     }
 
-    public int[] querie3VezesComprado(String codProd){
-        int[] total = new int[12];
-        for(InterfFilial f: filial){
-            for(int i=0; i<12; i++){
-                //total[i] += f.vezesProdComprado(codProd)[i];
+    public List<Integer> querie4getQuantidade(String prod) {
+        List<Integer> meses = new ArrayList<>(12);
+        int total;
+        for(int mes = 0; mes < 12; mes++) {
+            total = 0;
+            for(InterfFilial fil : filial){
+                total += fil.getQuantidadeTotalProduto(prod, mes);
             }
+            meses.add(mes,total);
         }
-        return total;
+        return meses;
     }
 
-    public int[] querie3Clientes(String codProd){
-        int[] total = new int[12];
-        for(InterfFilial f: filial){
-            for(int i=0; i<12; i++){
-                //total[i] += f.clientesProd(codProd)[i];
+    public List<Integer> querie4getClientes(String prod) { //acho que funciona
+        List<Integer> meses = new ArrayList<>(12);
+        int cliNum = 0;
+        for(int mes = 0; mes < 12; mes++){
+            cliNum = 0;
+            for (InterfFilial f : filial) {
+                cliNum += f.getClientes(prod, mes).size();
             }
+            meses.add(mes, cliNum);
         }
-        return total;
+
+        return meses;
     }
 
-    @Override
+    public List<Double> querie4getTotalFaturado(String prod) {
+        List<Double> meses = new ArrayList<>(12);
+        double total = 0;
+        for(int mes = 0; mes < 12; mes++){
+            total = 0;
+            for(InterfFilial fil : this.filial){
+                int[] quantidades = fil.getQuantidadePorTipoProduto(prod, mes);
+                total += fact.getTotalFaturado(prod, quantidades,mes);
+            }
+            meses.add(mes, total);
+        }
+        return meses;
+    }
+
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);
     }
 
-    @Override
     public boolean existeCodProd(String codProd) {
         return ctprods.contains(codProd);
     }
 
-    @Override
     public int getFILIAIS() {
         return this.FILIAIS;
     }
+
+    public InterfFaturacao getFact(){
+        return this.fact;
+    }
+
+    @Override
+    public List<InterfFilial> getFil() {
+        return this.filial;
+    }
+
 }

@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.System.out;
 import static java.lang.System.in;
@@ -204,6 +201,25 @@ public class GereVendasView implements InterfGereVendasView {
         out.println("Insira o código do cliente");
 
         return lerString();
+    }
+
+    public String getCodProduto() {
+        out.println("Insira o código do produto");
+
+        return lerString();
+    }
+
+    @Override
+    public void printMes(List<Integer> clientes,
+                         List<Integer> quantidade,
+                         List<Double> faturado) {
+        for(int mes = 0; mes < 12; mes++){
+            out.println("-----------MÊS " + (mes+1) + "-----------");
+            out.println("Quantidades vendidas: " + quantidade.get(mes));
+            out.println("Total faturado: " + faturado.get(mes));
+            out.println("Número de clientes diferentes: " + clientes.get(mes));
+        }
+        waiting();
     }
 
     @Override
