@@ -196,6 +196,16 @@ public class GereVendasView implements InterfGereVendasView {
         waiting();
     }
 
+    public void printQuerie3(List<Integer> compras, List<Integer> produtos, List<Double> gasto){
+        for(int i=0; i<12; i++){
+            out.println("---------Mês "+(i+1)+ "---------");
+            out.println("Total de compras: "+compras.get(i));
+            out.println("Total de produtos distintos comprados : "+produtos.get(i));
+            out.println("Total gasto: "+ gasto.get(i));
+        }
+        waiting();
+    }
+
     @Override
     public String getCodCliente() {
         out.println("Insira o código do cliente");

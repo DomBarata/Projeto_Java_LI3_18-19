@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasView {
@@ -22,6 +21,8 @@ public interface InterfGereVendasView {
     String getCodCliente();
 
     void printInvalido(String cod);
+
+    void printQuerie3(List<Integer> compras, List<Integer> produtos, List<Double> gasto);
 
     String getCodProduto();
 

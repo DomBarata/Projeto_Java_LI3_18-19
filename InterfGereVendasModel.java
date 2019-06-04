@@ -3,14 +3,18 @@ import java.util.Set;
 
 public interface InterfGereVendasModel {
 
-
     InterfFaturacao getFact();
     List<InterfFilial> getFil();
     void createData();
 
     Set<String> querie1();
+
     int[] querie2(int mes);
     int[] querie2(int mes, int fil);
+
+    List<Integer> getTotalComprasCliente(String codCliente);
+    List<Integer> getTotalProds(String codCliente);
+    List<Double> getTotalGasto(String codCliente);
 
     List<Integer> querie4getQuantidade(String prod);
     List<Integer> querie4getClientes(String prod);
@@ -20,6 +24,4 @@ public interface InterfGereVendasModel {
     boolean existeCodProd(String codProd);
 
     int getFILIAIS();
-
-
 }

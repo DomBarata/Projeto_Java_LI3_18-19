@@ -9,5 +9,14 @@ public interface InterfFilial {
     int getQuantidadeTotalProduto(String prod, int mes);
 
     int[] getQuantidadePorTipoProduto(String prod, int mes);
+
     Set<String> getClientes(String prod, int mes);
+
+    int[] totalCompras(String codCliente);
+
+    int[] totalProds(String codCliente);
+
+    Map<String,int[]> prodsQuantNormal(String codCliente);
+
+    Map<String,int[]> prodsQuantPromo(String codCliente);
 }

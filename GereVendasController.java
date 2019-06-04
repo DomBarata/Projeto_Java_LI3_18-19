@@ -50,19 +50,22 @@ public class GereVendasController implements InterfGereVendasController {
                         break;
                 case 3: String cod = this.view.getCodCliente();
                     if(this.model.existeCodCliente(cod)){
-
+                        List<Integer> compras = this.model.getTotalComprasCliente(cod);
+                        List<Integer> produtos = this.model.getTotalProds(cod);
+                        List<Double> gasto = this.model.getTotalGasto(cod);
+                        this.view.printQuerie3(compras,produtos,gasto);
                     }else{
                         this.view.printInvalido(cod);
                     }
                     break;
                 case 4: String prod = this.view.getCodProduto();
-                        this.view.printMes(this.model.querie4getClientes(prod),
-                                this.model.querie4getQuantidade(prod),
-                                this.model.querie4getTotalFaturado(prod));
+                    this.view.printMes(this.model.querie4getClientes(prod),
+                            this.model.querie4getQuantidade(prod),
+                            this.model.querie4getTotalFaturado(prod));
                 case 5: List<InterfFilial> fil = this.model.getFil();
-                        for(InterfFilial f:fil) {
-                            out.println(f);
-                        }
+                    for(InterfFilial f:fil) {
+                        out.println(f);
+                    }
                 case 6:
                 case 7:
                 case 8:
