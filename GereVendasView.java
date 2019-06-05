@@ -148,8 +148,8 @@ public class GereVendasView implements InterfGereVendasView {
         out.println("3 - ");
         out.println("4 - Através de um código de produto ver, mês a mês, os clientes que o compraram");
         out.println("5 - Através do código de cliente, ver os produtos e respetivas quantidades compradas");
+        out.println("6 - Consultar conjunto de produtos mais vendidos ao longo do ano");
        /* out.println("");
-        out.println("");
         out.println("");
         out.println("");
         out.println("");
@@ -218,6 +218,7 @@ public class GereVendasView implements InterfGereVendasView {
         return lerString();
     }
 
+    @Override
     public int querie6getX() {
         out.println("Insira o número de produtos a apresentar: ");
         return lerInt();
@@ -237,9 +238,15 @@ public class GereVendasView implements InterfGereVendasView {
     }
 
     @Override
+    public void printQuerie6(Map<String, Integer> prodsEClientes) {
+        for(Map.Entry<String, Integer> entry: prodsEClientes.entrySet()) {
+            out.println("Produto: " +entry.getKey()+"; Número de clientes distintos que o compraram: "+entry.getValue());
+        }
+    }
+
     public void printPaginacao(Map<Integer, Set<String>> produtos) {
-        for(Map.Entry<Integer, Set<String>> entry : produtos.entrySet()){
-            for (String s : entry.getValue()){
+        for (Map.Entry<Integer, Set<String>> entry : produtos.entrySet()) {
+            for (String s : entry.getValue()) {
                 out.println(s + ": " + entry.getKey());
             }
         }

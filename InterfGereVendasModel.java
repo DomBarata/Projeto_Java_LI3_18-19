@@ -29,4 +29,8 @@ public interface InterfGereVendasModel {
     boolean isEmpty();
 
     Map<Integer, Set<String>> querie5(String cli);
+
+    Set<String> querie6PodsMaisComprados(int x);
+
+    Map<String, Integer> querie6Clientes(Set<String> prods);
 }

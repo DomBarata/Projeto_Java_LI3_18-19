@@ -147,7 +147,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial i : info) {
                     total[0] += i.getQuantidadeComprada();
-                   // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
+                    // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
                 }
             }
         }
@@ -156,7 +156,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial in : info) {
                     total[1] += in.getQuantidadeComprada();
-                   // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
+                    // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
                 }
             }
         }
@@ -254,8 +254,8 @@ public class Filial implements InterfFilial{
         int[] quant = new int[2];
 
         for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()) {
-            if(entry.getValue().containsKey(mes)){
-                Set<InfoFilial> info = entry.getValue().get(mes);
+            if(entry.getValue().containsKey(mes-1)){
+                Set<InfoFilial> info = entry.getValue().get(mes-1);
                 for (InfoFilial infoFil : info) {
                     if (infoFil.getCliente().equals(codCliente)) {
                         if(!prodsQuant.containsKey(entry.getKey())) {
@@ -348,6 +348,68 @@ public class Filial implements InterfFilial{
                             prods.put(qtd, produtos);
                         }
                     }
+                }
+            }
+        }
+        return prods;
+    }
+
+    @Override
+    public TreeMap<Integer, Set<String>> getProdMaisComprado(TreeMap<Integer, Set<String>> prods) {
+
+        for (Map.Entry<String, Map<Integer, Set<InfoFilial>>> entry : this.normal.entrySet()) {
+            int quant = 0;
+            for(Map.Entry<Integer, Set<InfoFilial>> infoEntry : entry.getValue().entrySet()){
+                for(InfoFilial info: infoEntry.getValue()){
+                    quant += info.getQuantidadeComprada();
+                }
+                for(Map.Entry<Integer,Set<String>> prodsEntry: prods.entrySet()) {
+                    Iterator<String> it = prodsEntry.getValue().iterator();
+                    while (it.hasNext()) {
+                        String prod = it.next();
+                        if (prod.equals(entry.getKey())) {
+                            quant += prodsEntry.getKey();
+                            it.remove();
+                            prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                        }
+                    }
+                }
+                if(prods.containsKey(quant)){
+                    Set<String> set = prods.get(quant);
+                    set.add(entry.getKey());
+                    prods.put(quant, set);
+                }else{
+                    Set<String> set = new HashSet<>();
+                    set.add(entry.getKey());
+                    prods.put(quant,set);
+                }
+            }
+        }
+        for (Map.Entry<String, Map<Integer, Set<InfoFilial>>> entry : this.promo.entrySet()) {
+            int quant = 0;
+            for(Map.Entry<Integer, Set<InfoFilial>> infoEntry : entry.getValue().entrySet()){
+                for(InfoFilial info: infoEntry.getValue()){
+                    quant += info.getQuantidadeComprada();
+                }
+                for(Map.Entry<Integer,Set<String>> prodsEntry: prods.entrySet()){
+                    Iterator<String> it = prodsEntry.getValue().iterator();
+                    while (it.hasNext()) {
+                        String prod = it.next();
+                        if(prod.equals(entry.getKey())){
+                            quant += prodsEntry.getKey();
+                            it.remove();
+                            prods.put(prodsEntry.getKey(),prodsEntry.getValue());
+                        }
+                    }
+                }
+                if(prods.containsKey(quant)){
+                    Set<String> set = prods.get(quant);
+                    set.add(entry.getKey());
+                    prods.put(quant, set);
+                }else{
+                    Set<String> set = new HashSet<>();
+                    set.add(entry.getKey());
+                    prods.put(quant,set);
                 }
             }
         }

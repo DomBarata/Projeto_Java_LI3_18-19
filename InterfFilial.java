@@ -1,5 +1,6 @@
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public interface InterfFilial {
     void adiciona(InterfVenda venda);
@@ -16,9 +17,8 @@ public interface InterfFilial {
     int totalCompras(String codCliente, int mes);
 
     public Map<String,int[]> prodsQuant(String codCliente, int mes);
-
-
     boolean isEmpty();
-
     Map<Integer,Set<String>> getProdutosEQuantidades(Map<Integer, Set<String>> prods, String cli);
+
+    TreeMap<Integer,Set<String>> getProdMaisComprado(TreeMap<Integer,Set<String>> prods);
 }

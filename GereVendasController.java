@@ -57,17 +57,21 @@ public class GereVendasController implements InterfGereVendasController {
                         }else{
                             this.view.printInvalido(cod);
                         }
-                        break;
+                    break;
                 case 4: String prod = this.view.getCodProduto();
                         this.view.printMes(this.model.querie4getClientes(prod),
-                            this.model.querie4getQuantidade(prod),
-                            this.model.querie4getTotalFaturado(prod));
+                        this.model.querie4getQuantidade(prod),
+                        this.model.querie4getTotalFaturado(prod));
                         break;
                 case 5: String cli = this.view.getCodCliente();
                         Map<Integer, Set<String>> produtos = this.model.querie5(cli);
                         this.view.printPaginacao(produtos);
                         break;
-                case 6:
+                case 6: int x = this.view.querie6getX();
+                        Set<String> prods = this.model.querie6PodsMaisComprados(x);
+                        Map<String,Integer> prodsEClientes = this.model.querie6Clientes(prods);
+                        this.view.printQuerie6(prodsEClientes);
+                        break;
                 case 7:
                 case 8:
                 case 9:

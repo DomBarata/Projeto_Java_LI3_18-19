@@ -46,7 +46,7 @@ public class GereVendasModel implements InterfGereVendasModel {
             catcli.adiciona(s);
             i++;
         }
-       // out.println(i); //teste
+        // out.println(i); //teste
         i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
@@ -192,7 +192,7 @@ public class GereVendasModel implements InterfGereVendasModel {
             prodsQuant.add(i,new HashMap<>());
         }
         for(int i=0; i<12; i++) {
-            for (InterfFilial fil: this.filial){
+            for (InterfFilial fil: filial){
                 if(prodsQuant.get(i) == null) {
                     prodsQuant.add(i,fil.prodsQuant(codCliente, i));
                 }else{
@@ -258,7 +258,6 @@ public class GereVendasModel implements InterfGereVendasModel {
         return prods;
     }
 
-
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);
     }
@@ -290,5 +289,44 @@ public class GereVendasModel implements InterfGereVendasModel {
 
         return this.catcli.isEmpty() && this.ctprods.isEmpty()
                 && this.fact.isEmpty() && flag;
+    }
+
+    @Override
+    public Set<String> querie6PodsMaisComprados(int x) {
+        TreeMap<Integer,Set<String>> prods = new TreeMap<>(Collections.reverseOrder());
+        Map<Integer,Set<String>> maisComprados = new TreeMap<>(Collections.reverseOrder());
+
+        for(InterfFilial fil: this.filial) {
+            prods = fil.getProdMaisComprado(prods);
+        }
+
+        for(int i=0; i<x; i++){
+            Map.Entry<Integer,Set<String>> maisComprado = prods.pollFirstEntry();
+            maisComprados.put(maisComprado.getKey(),maisComprado.getValue());
+        }
+
+        Set<String> setProds = new HashSet<>();
+
+        for(Map.Entry<Integer,Set<String>> entry: maisComprados.entrySet()){
+            setProds.addAll(entry.getValue());
+        }
+
+        return setProds;
+    }
+
+    @Override
+    public Map<String, Integer> querie6Clientes(Set<String> prods) {
+        Map<String, Integer> prodsEClientes = new TreeMap<>();
+
+        for(String codProd: prods){
+            Set<String> clientes = new TreeSet<>();
+            for(InterfFilial fil: this.filial){
+                for(int mes=0; mes<12; mes++){
+                    clientes.addAll(fil.getClientes(codProd,mes));
+                }
+            }
+            prodsEClientes.put(codProd,clientes.size());
+        }
+        return prodsEClientes;
     }
 }

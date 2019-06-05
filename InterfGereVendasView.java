@@ -32,4 +32,6 @@ public interface InterfGereVendasView {
     void printPaginacao(Map<Integer, Set<String>> produtos);
 
     int querie6getX();
+
+    void printQuerie6(Map<String, Integer> prodsEClientes);
 }
