@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasView {
@@ -27,6 +28,8 @@ public interface InterfGereVendasView {
     String getCodProduto();
 
     void printMes(List<Integer> querie4getClientes, List<Integer> querie4getQuantidade, List<Double> querie4getTotalFaturado);
+
+    void printPaginacao(Map<Integer, Set<String>> produtos);
 
     int querie6getX();
 }

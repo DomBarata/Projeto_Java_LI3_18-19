@@ -145,11 +145,10 @@ public class GereVendasView implements InterfGereVendasView {
     public int menu(){
         out.println("1 - Lista ordenada alfabeticamente com os códigos dos produtos nunca comprados e o seu respectivo total");
         out.println("2 - Consultar número total global de vendas realizadas");
-
-        /*out.println("");
-        out.println("");
-        out.println("");
-        out.println("");
+        out.println("3 - ");
+        out.println("4 - Através de um código de produto ver, mês a mês, os clientes que o compraram");
+        out.println("5 - Através do código de cliente, ver os produtos e respetivas quantidades compradas");
+       /* out.println("");
         out.println("");
         out.println("");
         out.println("");
@@ -219,6 +218,11 @@ public class GereVendasView implements InterfGereVendasView {
         return lerString();
     }
 
+    public int querie6getX() {
+        out.println("Insira o número de produtos a apresentar: ");
+        return lerInt();
+    }
+
     @Override
     public void printMes(List<Integer> clientes,
                          List<Integer> quantidade,
@@ -233,9 +237,13 @@ public class GereVendasView implements InterfGereVendasView {
     }
 
     @Override
-    public int querie6getX() {
-        out.println("Insira o número de produtos a apresentar: ");
-        return lerInt();
+    public void printPaginacao(Map<Integer, Set<String>> produtos) {
+        for(Map.Entry<Integer, Set<String>> entry : produtos.entrySet()){
+            for (String s : entry.getValue()){
+                out.println(s + ": " + entry.getKey());
+            }
+        }
+        waiting();
     }
 
     @Override

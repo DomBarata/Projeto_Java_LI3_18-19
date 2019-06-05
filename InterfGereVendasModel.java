@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasModel {
@@ -26,4 +27,6 @@ public interface InterfGereVendasModel {
     int getFILIAIS();
 
     boolean isEmpty();
+
+    Map<Integer, Set<String>> querie5(String cli);
 }

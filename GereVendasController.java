@@ -1,4 +1,6 @@
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.lang.System.out;
 
@@ -27,7 +29,7 @@ public class GereVendasController implements InterfGereVendasController {
                 case 1: Set<String> nuncaComprados = this.model.querie1();
                     this.view.printPaginacao(nuncaComprados);
                     break;
-                case 2: int[] total;
+                case 2: int[] total = new int[2];
                         int mes = this.view.getMes();
                         if(mes<1 || mes>12){
                             this.view.printNumMesInvalido();
@@ -47,26 +49,25 @@ public class GereVendasController implements InterfGereVendasController {
                         }
                         break;
                 case 3: String cod = this.view.getCodCliente();
-                    if(this.model.existeCodCliente(cod)){
-                        List<Integer> compras = this.model.Querie3TotalComprasCliente(cod);
-                        List<Integer> produtos = this.model.Querie3TotalProds(cod);
-                        List<Double> gasto = this.model.Querie3TotalGasto(cod);
-                        this.view.printQuerie3(compras,produtos,gasto);
-                    }else{
-                        this.view.printInvalido(cod);
-                    }
-                    break;
+                        if(this.model.existeCodCliente(cod)){
+                            List<Integer> compras = this.model.Querie3TotalComprasCliente(cod);
+                            List<Integer> produtos = this.model.Querie3TotalProds(cod);
+                            List<Double> gasto = this.model.Querie3TotalGasto(cod);
+                            this.view.printQuerie3(compras,produtos,gasto);
+                        }else{
+                            this.view.printInvalido(cod);
+                        }
+                        break;
                 case 4: String prod = this.view.getCodProduto();
-                    this.view.printMes(this.model.querie4getClientes(prod),
+                        this.view.printMes(this.model.querie4getClientes(prod),
                             this.model.querie4getQuantidade(prod),
                             this.model.querie4getTotalFaturado(prod));
-                case 5: List<InterfFilial> fil = this.model.getFil();
-                    for(InterfFilial f:fil) {
-                        out.println(f);
-                    }
-                case 6: int x = this.view.querie6getX();
-                        Map<String, Integer> prods = new TreeMap<>();
-
+                        break;
+                case 5: String cli = this.view.getCodCliente();
+                        Map<Integer, Set<String>> produtos = this.model.querie5(cli);
+                        this.view.printPaginacao(produtos);
+                        break;
+                case 6:
                 case 7:
                 case 8:
                 case 9:

@@ -136,5 +136,4 @@ public class Faturacao implements InterfFaturacao{
     public boolean isEmpty(){
         return this.normal.isEmpty() && this.promo.isEmpty();
     }
-
 }

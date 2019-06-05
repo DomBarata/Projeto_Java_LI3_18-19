@@ -46,7 +46,7 @@ public class GereVendasModel implements InterfGereVendasModel {
             catcli.adiciona(s);
             i++;
         }
-        // out.println(i); //teste
+       // out.println(i); //teste
         i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
@@ -177,7 +177,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         Set<String> aux = new TreeSet<>();
         for(int mes = 0; mes < 12; mes++){
             aux.clear();
-            for(InterfFilial fil: this.filial){
+            for(InterfFilial fil: filial){
                 aux.addAll(fil.getProdutos(codCliente, mes));
             }
             prods.add(mes,aux.size());
@@ -244,6 +244,20 @@ public class GereVendasModel implements InterfGereVendasModel {
         }
         return meses;
     }
+
+    public Map<Integer, Set<String>> querie5(String cli){
+        Map<Integer, Set<String>> prods = new TreeMap<>(Comparator.reverseOrder());
+        Map<Integer, Set<String>> aux = new TreeMap<>();
+
+        for(InterfFilial f : this.filial){
+            aux.putAll(f.getProdutosEQuantidades(prods, cli));
+            prods.clear();
+            prods.putAll(aux);
+            aux.clear();
+        }
+        return prods;
+    }
+
 
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);

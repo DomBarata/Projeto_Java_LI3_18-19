@@ -147,7 +147,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial i : info) {
                     total[0] += i.getQuantidadeComprada();
-                    // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
+                   // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
                 }
             }
         }
@@ -156,7 +156,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial in : info) {
                     total[1] += in.getQuantidadeComprada();
-                    // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
+                   // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
                 }
             }
         }
@@ -292,5 +292,65 @@ public class Filial implements InterfFilial{
 
     public boolean isEmpty(){
         return this.normal.isEmpty() && this.promo.isEmpty();
+    }
+
+    public Map<Integer,Set<String>> getProdutosEQuantidades(Map<Integer, Set<String>> prods, String cli){
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()) {
+            for(Map.Entry<Integer, Set<InfoFilial>> listaMeses : entry.getValue().entrySet()){
+                for(InfoFilial cliente : listaMeses.getValue()){
+                    if (cliente.getCliente().equals(cli)) {
+                        int qtd = cliente.getQuantidadeComprada();
+                        //Mudar for para Iterator
+                        for(Map.Entry<Integer, Set<String>> prodsEntry : prods.entrySet()){
+                            for(String produto : prodsEntry.getValue()){
+                                if(produto.equals(entry.getKey())){
+                                    qtd += prodsEntry.getKey();
+                                    prodsEntry.getValue().remove(entry.getKey());
+                                    prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                                }
+                            }
+                        }
+                        if(prods.containsKey(qtd)){
+                            Set<String> produtos = prods.get(qtd);
+                            produtos.add(entry.getKey());
+                            prods.put(qtd, produtos);
+                        }else{
+                            Set<String> produtos = new TreeSet<>();
+                            produtos.add(entry.getKey());
+                            prods.put(qtd, produtos);
+                        }
+                    }
+                }
+            }
+        }
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : promo.entrySet()) {
+            for(Map.Entry<Integer, Set<InfoFilial>> listaMeses : entry.getValue().entrySet()){
+                for(InfoFilial cliente : listaMeses.getValue()){
+                    if (cliente.getCliente().equals(cli)) {
+                        int qtd = cliente.getQuantidadeComprada();
+                        //Mudar for para Iterator
+                        for(Map.Entry<Integer, Set<String>> prodsEntry : prods.entrySet()){
+                            for(String produto : prodsEntry.getValue()){
+                                if(produto.equals(entry.getKey())){
+                                    qtd += prodsEntry.getKey();
+                                    prodsEntry.getValue().remove(entry.getKey());
+                                    prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                                }
+                            }
+                        }
+                        if(prods.containsKey(qtd)){
+                            Set<String> produtos = prods.get(qtd);
+                            produtos.add(entry.getKey());
+                            prods.put(qtd, produtos);
+                        }else{
+                            Set<String> produtos = new TreeSet<>();
+                            produtos.add(entry.getKey());
+                            prods.put(qtd, produtos);
+                        }
+                    }
+                }
+            }
+        }
+        return prods;
     }
 }

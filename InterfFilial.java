@@ -15,6 +15,10 @@ public interface InterfFilial {
 
     int totalCompras(String codCliente, int mes);
 
-    Map<String,int[]> prodsQuant(String codCliente, int mes);
+    public Map<String,int[]> prodsQuant(String codCliente, int mes);
+
+
     boolean isEmpty();
+
+    Map<Integer,Set<String>> getProdutosEQuantidades(Map<Integer, Set<String>> prods, String cli);
 }
