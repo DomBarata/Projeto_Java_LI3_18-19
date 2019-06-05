@@ -15,10 +15,6 @@ public interface InterfFilial {
 
     int totalCompras(String codCliente, int mes);
 
-    Map<String,int[]> prodsQuantNormal(String codCliente);
-
-    Map<String,int[]> prodsQuantPromo(String codCliente);
-
-
+    Map<String,int[]> prodsQuant(String codCliente, int mes);
     boolean isEmpty();
 }

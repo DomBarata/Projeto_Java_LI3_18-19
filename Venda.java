@@ -63,10 +63,5 @@ public class Venda implements InterfVenda, Serializable {
         return new Venda(this);
     }
 
-    @Override
-    public String toString() {
-        return ("Fil: " + filial + " Prod: " + this.codPro + " cli: " + this.codCli
-        + " tipo" + tipo + " mes: " + mes + " qtd: " + quant
-        + " preco: " + preco);
-    }
+
 }

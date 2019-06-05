@@ -1,6 +1,4 @@
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -29,7 +27,7 @@ public class GereVendasController implements InterfGereVendasController {
                 case 1: Set<String> nuncaComprados = this.model.querie1();
                     this.view.printPaginacao(nuncaComprados);
                     break;
-                case 2: int[] total = new int[2];
+                case 2: int[] total;
                         int mes = this.view.getMes();
                         if(mes<1 || mes>12){
                             this.view.printNumMesInvalido();
@@ -62,13 +60,13 @@ public class GereVendasController implements InterfGereVendasController {
                     this.view.printMes(this.model.querie4getClientes(prod),
                             this.model.querie4getQuantidade(prod),
                             this.model.querie4getTotalFaturado(prod));
-                    break;
                 case 5: List<InterfFilial> fil = this.model.getFil();
                     for(InterfFilial f:fil) {
                         out.println(f);
                     }
-                    break;
-                case 6:
+                case 6: int x = this.view.querie6getX();
+                        Map<String, Integer> prods = new TreeMap<>();
+
                 case 7:
                 case 8:
                 case 9:

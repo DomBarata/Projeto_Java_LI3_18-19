@@ -9,7 +9,7 @@ public interface InterfFaturacao {
     double getTotalFaturadoProd(String codProd);
     double getTotalFaturado(String prod, int[] quant, int mes);
 
-    List<Double> totalfaturado(Map<String,int[]> prodsQuantNormal, Map<String,int[]> prodsQuantPromo);
+    List<Double> totalfaturado(List<Map<String,int[]>> prodsQuant);
 
     boolean isEmpty();
 }

@@ -233,6 +233,12 @@ public class GereVendasView implements InterfGereVendasView {
     }
 
     @Override
+    public int querie6getX() {
+        out.println("Insira o número de produtos a apresentar: ");
+        return lerInt();
+    }
+
+    @Override
     public void printInvalido(String cod) {
         out.println("O código " + cod + " não existe");
         waiting();

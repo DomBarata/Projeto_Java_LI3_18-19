@@ -27,4 +27,6 @@ public interface InterfGereVendasView {
     String getCodProduto();
 
     void printMes(List<Integer> querie4getClientes, List<Integer> querie4getQuantidade, List<Double> querie4getTotalFaturado);
+
+    int querie6getX();
 }

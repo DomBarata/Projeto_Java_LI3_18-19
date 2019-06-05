@@ -46,7 +46,7 @@ public class GereVendasModel implements InterfGereVendasModel {
             catcli.adiciona(s);
             i++;
         }
-       // out.println(i); //teste
+        // out.println(i); //teste
         i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
@@ -177,7 +177,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         Set<String> aux = new TreeSet<>();
         for(int mes = 0; mes < 12; mes++){
             aux.clear();
-            for(InterfFilial fil: filial){
+            for(InterfFilial fil: this.filial){
                 aux.addAll(fil.getProdutos(codCliente, mes));
             }
             prods.add(mes,aux.size());
@@ -187,41 +187,20 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public List<Double> Querie3TotalGasto(String codCliente){
         List<Double> gasto = new ArrayList<>(12);
-        Map<String, int[]> prodsQuantNormal = new HashMap<>();
-        for(int fil=0; fil<FILIAIS; fil++){
-            Map<String, int[]> aux = this.filial.get(fil).prodsQuantNormal(codCliente);
-            if(fil>0) {
-                for (Map.Entry<String, int[]> entry : aux.entrySet()) {
-                    if (prodsQuantNormal.containsKey(entry.getKey())) {
-                        for (int i = 0; i < 12; i++) {
-                            prodsQuantNormal.get(entry.getKey())[i] += entry.getValue()[i];
-                        }
-                    }else{
-                        prodsQuantNormal.put(entry.getKey(),entry.getValue());
-                    }
+        List<Map<String,int[]>> prodsQuant = new ArrayList<>(12);
+        for(int i=0; i<12; i++){
+            prodsQuant.add(i,new HashMap<>());
+        }
+        for(int i=0; i<12; i++) {
+            for (InterfFilial fil: this.filial){
+                if(prodsQuant.get(i) == null) {
+                    prodsQuant.add(i,fil.prodsQuant(codCliente, i));
+                }else{
+                    prodsQuant.set(i,fil.prodsQuant(codCliente, i));
                 }
-            }else{
-                prodsQuantNormal.putAll(aux);
             }
         }
-        Map<String, int[]> prodsQuantPromo = new HashMap<>();
-        for(int fil=0; fil<FILIAIS; fil++){
-            Map<String, int[]> aux = this.filial.get(fil).prodsQuantPromo(codCliente);
-            if(fil>0) {
-                for (Map.Entry<String, int[]> entry : aux.entrySet()) {
-                    if (prodsQuantPromo.containsKey(entry.getKey())) {
-                        for (int i = 0; i < 12; i++) {
-                            prodsQuantPromo.get(entry.getKey())[i] += entry.getValue()[i];
-                        }
-                    }else{
-                        prodsQuantPromo.put(entry.getKey(),entry.getValue());
-                    }
-                }
-            }else{
-                prodsQuantPromo.putAll(aux);
-            }
-        }
-        gasto = this.fact.totalfaturado(prodsQuantNormal, prodsQuantPromo);
+        gasto = this.fact.totalfaturado(prodsQuant);
         return gasto;
     }
 

@@ -147,7 +147,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial i : info) {
                     total[0] += i.getQuantidadeComprada();
-                   // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
+                    // System.out.println("normal" + mes + "," + i.getQuantidadeComprada());
                 }
             }
         }
@@ -156,7 +156,7 @@ public class Filial implements InterfFilial{
             if(info != null) {
                 for (InfoFilial in : info) {
                     total[1] += in.getQuantidadeComprada();
-                   // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
+                    // System.out.println("promo " + mes + "," + in.getQuantidadeComprada());
                 }
             }
         }
@@ -249,38 +249,45 @@ public class Filial implements InterfFilial{
         return total;
     }
 
+    public Map<String,int[]> prodsQuant(String codCliente, int mes) {
+        Map<String,int[]> prodsQuant = new HashMap<>();
+        int[] quant = new int[2];
 
-    public Map<String,int[]> prodsQuantNormal(String codCliente) {
-        Map<String,int[]> total = new HashMap<>();
-        int[] quant = new int[12];
-        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : this.normal.entrySet()) {
-            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
-                Set<InfoFilial> info = entry2.getValue();
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : normal.entrySet()) {
+            if(entry.getValue().containsKey(mes)){
+                Set<InfoFilial> info = entry.getValue().get(mes);
                 for (InfoFilial infoFil : info) {
                     if (infoFil.getCliente().equals(codCliente)) {
-                        quant[entry2.getKey()] += infoFil.getQuantidadeComprada();
-                        total.put(entry.getKey(),quant);
+                        if(!prodsQuant.containsKey(entry.getKey())) {
+                            quant[0] += infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(), quant);
+                        }else{
+                            quant = prodsQuant.get(entry.getKey());
+                            quant[0] += infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(), quant);
+                        }
                     }
                 }
             }
         }
-        return total;
-    }
-    public Map<String,int[]> prodsQuantPromo(String codCliente) {
-        Map<String,int[]> total = new HashMap<>();
-        int[] quant = new int[12];
-        for (Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry  : this.promo.entrySet()) {
-            for(Map.Entry<Integer,Set<InfoFilial>> entry2: entry.getValue().entrySet()) {
-                Set<InfoFilial> info = entry2.getValue();
+        for(Map.Entry<String, Map<Integer,Set<InfoFilial>>> entry : promo.entrySet()) {
+            if(entry.getValue().containsKey(mes)){
+                Set<InfoFilial> info = entry.getValue().get(mes);
                 for (InfoFilial infoFil : info) {
                     if (infoFil.getCliente().equals(codCliente)) {
-                        quant[entry2.getKey()] += infoFil.getQuantidadeComprada();
-                        total.put(entry.getKey(),quant);
+                        if(!prodsQuant.containsKey(entry.getKey())) {
+                            quant[1] += infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(), quant);
+                        }else{
+                            quant = prodsQuant.get(entry.getKey());
+                            quant[1] += infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(), quant);
+                        }
                     }
                 }
             }
         }
-        return total;
+        return prodsQuant;
     }
 
     public boolean isEmpty(){
