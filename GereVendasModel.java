@@ -46,14 +46,14 @@ public class GereVendasModel implements InterfGereVendasModel {
             catcli.adiciona(s);
             i++;
         }
-        out.println(i); //teste
+       // out.println(i); //teste
         i=0;
         files = lerAllLines(PRODUTOS);
         for(String s : files){
             ctprods.adiciona(s);
             i++;
         }
-        out.println(i); //teste
+        //out.println(i); //teste
         i=0;
         files = lerAllLines(VENDAS);
         for(String s : files) {
@@ -159,47 +159,6 @@ public class GereVendasModel implements InterfGereVendasModel {
         return total;
     }
 
-    public List<Integer> querie4getQuantidade(String prod) {
-        List<Integer> meses = new ArrayList<>(12);
-        int total;
-        for(int mes = 0; mes < 12; mes++) {
-            total = 0;
-            for(InterfFilial fil : filial){
-                total += fil.getQuantidadeTotalProduto(prod, mes);
-            }
-            meses.add(mes,total);
-        }
-        return meses;
-    }
-
-    public List<Integer> querie4getClientes(String prod) { //acho que funciona
-        List<Integer> meses = new ArrayList<>(12);
-        int cliNum = 0;
-        for(int mes = 0; mes < 12; mes++){
-            cliNum = 0;
-            for (InterfFilial f : filial) {
-                cliNum += f.getClientes(prod, mes).size();
-            }
-            meses.add(mes, cliNum);
-        }
-
-        return meses;
-    }
-
-    public List<Double> querie4getTotalFaturado(String prod) {
-        List<Double> meses = new ArrayList<>(12);
-        double total = 0;
-        for(int mes = 0; mes < 12; mes++){
-            total = 0;
-            for(InterfFilial fil : this.filial){
-                int[] quantidades = fil.getQuantidadePorTipoProduto(prod, mes);
-                total += fact.getTotalFaturado(prod, quantidades,mes);
-            }
-            meses.add(mes, total);
-        }
-        return meses;
-    }
-
     public List<Integer> Querie3TotalComprasCliente(String codCliente){
         List<Integer> compras = new ArrayList<>(12);
         int total;
@@ -266,6 +225,47 @@ public class GereVendasModel implements InterfGereVendasModel {
         return gasto;
     }
 
+    public List<Integer> querie4getQuantidade(String prod) {
+        List<Integer> meses = new ArrayList<>(12);
+        int total;
+        for(int mes = 0; mes < 12; mes++) {
+            total = 0;
+            for(InterfFilial fil : filial){
+                total += fil.getQuantidadeTotalProduto(prod, mes);
+            }
+            meses.add(mes,total);
+        }
+        return meses;
+    }
+
+    public List<Integer> querie4getClientes(String prod) { //acho que funciona
+        List<Integer> meses = new ArrayList<>(12);
+        int cliNum = 0;
+        for(int mes = 0; mes < 12; mes++){
+            cliNum = 0;
+            for (InterfFilial f : filial) {
+                cliNum += f.getClientes(prod, mes).size();
+            }
+            meses.add(mes, cliNum);
+        }
+
+        return meses;
+    }
+
+    public List<Double> querie4getTotalFaturado(String prod) {
+        List<Double> meses = new ArrayList<>(12);
+        double total = 0;
+        for(int mes = 0; mes < 12; mes++){
+            total = 0;
+            for(InterfFilial fil : this.filial){
+                int[] quantidades = fil.getQuantidadePorTipoProduto(prod, mes);
+                total += fact.getTotalFaturado(prod, quantidades,mes);
+            }
+            meses.add(mes, total);
+        }
+        return meses;
+    }
+
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);
     }
@@ -285,5 +285,17 @@ public class GereVendasModel implements InterfGereVendasModel {
     @Override
     public List<InterfFilial> getFil() {
         return this.filial;
+    }
+
+    public boolean isEmpty(){
+        boolean flag = false;
+
+        for(InterfFilial f : filial){
+            if(f.isEmpty())
+                flag = true;
+        }
+
+        return this.catcli.isEmpty() && this.ctprods.isEmpty()
+                && this.fact.isEmpty() && flag;
     }
 }

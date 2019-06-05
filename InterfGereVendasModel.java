@@ -24,4 +24,6 @@ public interface InterfGereVendasModel {
     boolean existeCodProd(String codProd);
 
     int getFILIAIS();
+
+    boolean isEmpty();
 }

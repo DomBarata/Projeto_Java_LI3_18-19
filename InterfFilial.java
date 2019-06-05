@@ -20,4 +20,5 @@ public interface InterfFilial {
     Map<String,int[]> prodsQuantPromo(String codCliente);
 
 
+    boolean isEmpty();
 }

@@ -6,4 +6,6 @@ public interface InterfCatProds {
     boolean contains(String codPro);
 
     Set<String> getProdutos();
+
+    boolean isEmpty();
 }

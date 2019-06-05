@@ -27,17 +27,22 @@ public class Filial implements InterfFilial{
                             a.incrementaNumVendas();
                             a.adicionaQuantidade(venda.getQuant());
                             clientes.add(a);
+                            meses.put(venda.getMes()-1,clientes);
+                            this.promo.put(venda.getCodPro(), meses);
                         }
                     }
                     if(flag){
                         InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
                         clientes.add(infoNovo);
+                        meses.put(venda.getMes()-1,clientes);
+                        this.promo.put(venda.getCodPro(), meses);
                     }
                 }else{
                     clientes = new HashSet<>();
                     InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
                     clientes.add(infoNovo);
                     meses.put(venda.getMes()-1,clientes);
+                    this.promo.put(venda.getCodPro(), meses);
                 }
             }else{//O map não tem o produto
                 Set<InfoFilial> info = new HashSet<>();
@@ -61,17 +66,22 @@ public class Filial implements InterfFilial{
                             a.incrementaNumVendas();
                             a.adicionaQuantidade(venda.getQuant());
                             clientes.add(a);
+                            meses.put(venda.getMes()-1,clientes);
+                            this.normal.put(venda.getCodPro(), meses);
                         }
                     }
                     if(flag){
                         InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
                         clientes.add(infoNovo);
                         meses.put(venda.getMes()-1,clientes);
+                        this.normal.put(venda.getCodPro(), meses);
                     }
                 }else{
                     clientes = new HashSet<>();
                     InfoFilial infoNovo = new InfoFilial(venda.getCodCli(),venda.getQuant());
                     clientes.add(infoNovo);
+                    meses.put(venda.getMes()-1,clientes);
+                    this.normal.put(venda.getCodPro(), meses);
                 }
             }else{//O map não tem o produto
                 Set<InfoFilial> info = new HashSet<>();
@@ -273,4 +283,7 @@ public class Filial implements InterfFilial{
         return total;
     }
 
+    public boolean isEmpty(){
+        return this.normal.isEmpty() && this.promo.isEmpty();
+    }
 }

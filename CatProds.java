@@ -1,13 +1,10 @@
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class CatProds implements InterfCatProds{
     private Set<String> produtos;
 
     public CatProds(){
-        this.produtos = new HashSet<>();
+        this.produtos = new TreeSet<>();
     }
 
 
@@ -22,6 +19,10 @@ public class CatProds implements InterfCatProds{
 
     public Set<String> getProdutos(){
         return new HashSet<>(this.produtos);
+    }
+
+    public boolean isEmpty(){
+        return this.produtos.isEmpty();
     }
 }
 
