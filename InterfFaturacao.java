@@ -12,4 +12,8 @@ public interface InterfFaturacao {
     List<Double> totalfaturado(List<Map<String,int[]>> prodsQuant);
 
     boolean isEmpty();
+
+    double[] getPrecoNormalProd(String codProd);
+
+    double[] getPrecoPromoProd(String codProd);
 }

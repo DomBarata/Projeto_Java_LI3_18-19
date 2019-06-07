@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public interface InterfGereVendasView {
 
@@ -34,4 +35,10 @@ public interface InterfGereVendasView {
     int querie6getX();
 
     void printQuerie6(Map<String, Integer> prodsEClientes);
+
+    void printQuerie8(int x,Map<Integer, Set<String>> clientes);
+
+    void printI(int i);
+
+    void printQuerie9(Map<Integer, Map<String, Double>> clis, int x9);
 }

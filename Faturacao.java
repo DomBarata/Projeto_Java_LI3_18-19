@@ -110,25 +110,29 @@ public class Faturacao implements InterfFaturacao{
     public List<Double> totalfaturado(List<Map<String,int[]>> prodsQuant){
         List<Double> total = new ArrayList<>(12);
         double[] faturado = new double[2];
-        for(int i=0; i<12; i++){
-            total.add(i,0.0);
-        }
+
         for(int i=0; i<12; i++){
             faturado[0] = 0.0;
             faturado[1] = 0.0;
+
             for(Map.Entry<String,int[]> entry: prodsQuant.get(i).entrySet()){
                 if(normal.containsKey(entry.getKey())){
                     VendaMensal venda = normal.get(entry.getKey())[i];
-                    if(venda != null)
-                        faturado[0] += entry.getValue()[0] * venda.getPrecoUnitario();
+                    if(venda != null) {
+                        faturado[0] += entry.getValue()[0] * venda.getPreco();
+                        System.out.println(entry.getKey() + "  " + faturado[0]);
+                    }
                 }
                 if(promo.containsKey(entry.getKey())){
                     VendaMensal venda = promo.get(entry.getKey())[i];
-                    if(venda != null)
-                        faturado[1] += entry.getValue()[1] * venda.getPrecoUnitario();
+                    if(venda != null) {
+                        faturado[1] += entry.getValue()[1] * venda.getPreco();
+                        System.out.println(entry.getKey() + "  " + faturado[0]);
+                    }
                 }
+                System.out.println("nao contem");
             }
-            total.set(i,faturado[0]+faturado[1]);
+            total.add(i,faturado[0]+faturado[1]);
         }
         return total;
     }
@@ -136,4 +140,27 @@ public class Faturacao implements InterfFaturacao{
     public boolean isEmpty(){
         return this.normal.isEmpty() && this.promo.isEmpty();
     }
+
+    @Override
+    public double[] getPrecoNormalProd(String codProd) {
+        double[] preco = new double[12];
+        if(this.normal.containsKey(codProd)){
+            for(int i = 0; i<12; i++){
+                preco[i] = this.normal.get(codProd)[i].getPrecoUnitario();
+            }
+            return preco;
+        }else{ return null; }
+    }
+
+    @Override
+    public double[] getPrecoPromoProd(String codProd) {
+        double[] preco = new double[12];
+        if(this.promo.containsKey(codProd)){
+            for(int i = 0; i<12; i++){
+                preco[i] = this.promo.get(codProd)[i].getPrecoUnitario();
+            }
+            return preco;
+        }else{ return null; }
+    }
+
 }

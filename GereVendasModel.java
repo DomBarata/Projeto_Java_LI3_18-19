@@ -196,7 +196,14 @@ public class GereVendasModel implements InterfGereVendasModel {
                 if(prodsQuant.get(i) == null) {
                     prodsQuant.add(i,fil.prodsQuant(codCliente, i));
                 }else{
-                    prodsQuant.set(i,fil.prodsQuant(codCliente, i));
+                    Map<String,int[]> aux = fil.prodsQuant(codCliente, i);
+                    for(Map.Entry<String, int[]> entry: aux.entrySet()){
+                        if(prodsQuant.get(i).get(entry.getKey()) != null) {
+                            entry.getValue()[0] += prodsQuant.get(i).get(entry.getKey())[0];
+                            entry.getValue()[1] += prodsQuant.get(i).get(entry.getKey())[1];
+                        }
+                    }
+                    prodsQuant.set(i,aux);
                 }
             }
         }
@@ -258,6 +265,14 @@ public class GereVendasModel implements InterfGereVendasModel {
         return prods;
     }
 
+    public int getI(){
+        int i=0;
+        for(InterfFilial fil: filial){
+            i += fil.getI();
+        }
+        return i;
+    }
+
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);
     }
@@ -294,21 +309,14 @@ public class GereVendasModel implements InterfGereVendasModel {
     @Override
     public Set<String> querie6PodsMaisComprados(int x) {
         TreeMap<Integer,Set<String>> prods = new TreeMap<>(Collections.reverseOrder());
-        Map<Integer,Set<String>> maisComprados = new TreeMap<>(Collections.reverseOrder());
+        Set<String> setProds = new HashSet<>();
 
         for(InterfFilial fil: this.filial) {
             prods = fil.getProdMaisComprado(prods);
         }
 
         for(int i=0; i<x; i++){
-            Map.Entry<Integer,Set<String>> maisComprado = prods.pollFirstEntry();
-            maisComprados.put(maisComprado.getKey(),maisComprado.getValue());
-        }
-
-        Set<String> setProds = new HashSet<>();
-
-        for(Map.Entry<Integer,Set<String>> entry: maisComprados.entrySet()){
-            setProds.addAll(entry.getValue());
+            setProds.addAll(prods.pollFirstEntry().getValue());
         }
 
         return setProds;
@@ -328,5 +336,45 @@ public class GereVendasModel implements InterfGereVendasModel {
             prodsEClientes.put(codProd,clientes.size());
         }
         return prodsEClientes;
+    }
+
+    @Override
+    public Map<Integer, Set<String>> querie8() {
+        Map<Integer,Set<String>> clientes = new TreeMap<>(Collections.reverseOrder());
+        Map<String,Set<String>> cliProds = new HashMap<>();
+
+        for(InterfFilial fil : filial){
+            cliProds = fil.clientesMaisProds(cliProds);
+        }
+        for(Map.Entry<String, Set<String>> entry : cliProds.entrySet()){
+            if(clientes.containsKey(entry.getValue().size())){
+                Set<String> set = clientes.get(entry.getValue().size());
+                set.add(entry.getKey());
+                clientes.put(entry.getValue().size(),set);
+            }else{
+                Set<String> set = new TreeSet<>();
+                set.add(entry.getKey());
+                clientes.put(entry.getValue().size(),set);
+            }
+        }
+        return clientes;
+    }
+
+    @Override
+    public Map<Integer, Map<String, Double>> querie9(String codProd) {
+        double[] precoN = new double[12];
+        double[] precoP = new double[12];
+        precoN = this.fact.getPrecoNormalProd(codProd);
+        precoP = this.fact.getPrecoPromoProd(codProd);
+
+        Map<Integer,Map<String,Double>> aux = new TreeMap<>();
+        Map<Integer,Map<String,Double>> clis = new TreeMap<>(Collections.reverseOrder());
+        for(InterfFilial fil: filial){
+            aux.putAll(fil.clisProdQ9(codProd,clis,precoN,precoP));
+            clis.clear();
+            clis.putAll(aux);
+            aux.clear();
+        }
+        return clis;
     }
 }

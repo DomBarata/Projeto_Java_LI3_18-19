@@ -145,13 +145,13 @@ public class GereVendasView implements InterfGereVendasView {
     public int menu(){
         out.println("1 - Lista ordenada alfabeticamente com os códigos dos produtos nunca comprados e o seu respectivo total");
         out.println("2 - Consultar número total global de vendas realizadas");
-        out.println("3 - ");
+        out.println("3 - Dado um código de cliente ver, mês a mês, informações sobre as compras que efetuou");
         out.println("4 - Através de um código de produto ver, mês a mês, os clientes que o compraram");
         out.println("5 - Através do código de cliente, ver os produtos e respetivas quantidades compradas");
-        out.println("6 - Consultar conjunto de produtos mais vendidos ao longo do ano");
+        out.println("6 - Consultar o conjunto de produtos mais vendidos ao longo do ano");
+        out.println("7 -");
+        out.println("8 - Consultar a lista dos clientes que compraram mais produtos diferentes");
        /* out.println("");
-        out.println("");
-        out.println("");
         out.println("");
         out.println("");
         out.println("");
@@ -242,6 +242,44 @@ public class GereVendasView implements InterfGereVendasView {
         for(Map.Entry<String, Integer> entry: prodsEClientes.entrySet()) {
             out.println("Produto: " +entry.getKey()+"; Número de clientes distintos que o compraram: "+entry.getValue());
         }
+    }
+
+    @Override
+    public void printQuerie8(int x, Map<Integer, Set<String>> clientes) {
+        int i = 0;
+        while(i<x) {
+            for (Map.Entry<Integer, Set<String>> entry : clientes.entrySet()) {
+                for (String s : entry.getValue()) {
+                    if(i<x) {
+                        out.println(s + ": " + entry.getKey());
+                        i++;
+                    }
+                }
+            }
+        }
+        waiting();
+    }
+
+    @Override
+    public void printI(int i) {
+        out.println("i "+i);
+    }
+
+    @Override
+    public void printQuerie9(Map<Integer, Map<String, Double>> clis, int x9) {
+        int i = 0;
+        while(i<x9) {
+            for (Map.Entry<Integer, Map<String, Double>> entry : clis.entrySet()) {
+                for (Map.Entry<String, Double> entry2 : entry.getValue().entrySet()) {
+                    if(i<x9) {
+                        out.println(entry2.getKey() + ": " + entry.getValue() + "€");
+                        i++;
+                    }
+                }
+
+            }
+        }
+        waiting();
     }
 
     public void printPaginacao(Map<Integer, Set<String>> produtos) {

@@ -1,6 +1,4 @@
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -66,6 +64,7 @@ public class GereVendasController implements InterfGereVendasController {
                 case 5: String cli = this.view.getCodCliente();
                         Map<Integer, Set<String>> produtos = this.model.querie5(cli);
                         this.view.printPaginacao(produtos);
+                        //this.view.printI(this.model.getI());
                         break;
                 case 6: int x = this.view.querie6getX();
                         Set<String> prods = this.model.querie6PodsMaisComprados(x);
@@ -73,9 +72,19 @@ public class GereVendasController implements InterfGereVendasController {
                         this.view.printQuerie6(prodsEClientes);
                         break;
                 case 7:
-                case 8:
-                case 9:
-                case 10:
+                case 8: int x8 = this.view.querie6getX();
+                        Map<Integer, Set<String>> clientes;
+                        clientes = this.model.querie8();
+                        this.view.printQuerie8(x8,clientes);
+                        //this.view.printI(this.model.getI());
+                        break;
+                case 9: String codProd = this.view.getCodProduto();
+                        int x9 = this.view.querie6getX();
+                        Map<Integer, Map<String, Double>> clis;
+                        clis = this.model.querie9(codProd);
+                        this.view.printQuerie9(clis,x9);
+                        break;
+                case 10: break;
                 case 0: break;
                 default: this.view.printOpInvalida();
             }
