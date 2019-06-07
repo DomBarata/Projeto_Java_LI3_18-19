@@ -151,8 +151,8 @@ public class GereVendasView implements InterfGereVendasView {
         out.println("6 - Consultar o conjunto de produtos mais vendidos ao longo do ano");
         out.println("7 -");
         out.println("8 - Consultar a lista dos clientes que compraram mais produtos diferentes");
+        out.println("9 - Consultar a lista dos clientes que mais compraram um determinado produto");
        /* out.println("");
-        out.println("");
         out.println("");
         out.println("");
         out.println("");*/
@@ -268,16 +268,18 @@ public class GereVendasView implements InterfGereVendasView {
     @Override
     public void printQuerie9(Map<Integer, Map<String, Double>> clis, int x9) {
         int i = 0;
+        if(x9>clis.size()){x9=clis.size();}
         while(i<x9) {
             for (Map.Entry<Integer, Map<String, Double>> entry : clis.entrySet()) {
                 for (Map.Entry<String, Double> entry2 : entry.getValue().entrySet()) {
                     if(i<x9) {
-                        out.println(entry2.getKey() + ": " + entry.getValue() + "€");
+                        out.println(entry2.getKey() + ": " + entry2.getValue() + "€");
                         i++;
                     }
                 }
 
             }
+
         }
         waiting();
     }

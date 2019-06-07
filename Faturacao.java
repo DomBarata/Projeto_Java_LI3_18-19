@@ -146,7 +146,11 @@ public class Faturacao implements InterfFaturacao{
         double[] preco = new double[12];
         if(this.normal.containsKey(codProd)){
             for(int i = 0; i<12; i++){
-                preco[i] = this.normal.get(codProd)[i].getPrecoUnitario();
+                if(this.normal.get(codProd)[i] == null){
+                    preco[i]=0.0;
+                }else {
+                    preco[i] = this.normal.get(codProd)[i].getPrecoUnitario();
+                }
             }
             return preco;
         }else{ return null; }
@@ -157,7 +161,11 @@ public class Faturacao implements InterfFaturacao{
         double[] preco = new double[12];
         if(this.promo.containsKey(codProd)){
             for(int i = 0; i<12; i++){
-                preco[i] = this.promo.get(codProd)[i].getPrecoUnitario();
+                if(this.promo.get(codProd)[i] == null){
+                    preco[i]=0.0;
+                }else {
+                    preco[i] = this.promo.get(codProd)[i].getPrecoUnitario();
+                }
             }
             return preco;
         }else{ return null; }

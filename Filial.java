@@ -468,69 +468,62 @@ public class Filial implements InterfFilial {
     public Map<Integer, Map<String, Double>> clisProdQ9(String codProd, Map<Integer, Map<String, Double>> clis, double[] precoN, double[] precoP) {
         if (normal.containsKey(codProd)) {
             Map<Integer, Set<InfoFilial>> meses = normal.get(codProd);
-            for (Iterator<Map.Entry<Integer, Set<InfoFilial>>> iterator = meses.entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<Integer, Set<InfoFilial>> entry = iterator.next();
-                for (Iterator<InfoFilial> iter = entry.getValue().iterator(); iter.hasNext(); ) {
-                    InfoFilial info = iter.next();
+            for (Map.Entry<Integer, Set<InfoFilial>> entry : meses.entrySet()) {
+                for (InfoFilial info : entry.getValue()) {
                     int qnt = info.getQuantidadeComprada();
                     double gasto = 0.0;
 
-                    for (Iterator<Map.Entry<Integer, Map<String, Double>>> it = clis.entrySet().iterator(); it.hasNext(); ) {
-                        Map.Entry<Integer, Map<String, Double>> entryQnt = it.next();
-                        for (Iterator<Map.Entry<String, Double>> iterator1 = entryQnt.getValue().entrySet().iterator(); iterator1.hasNext(); ) {
-                            Map.Entry<String, Double> entryClis = iterator1.next();
+                    for (Map.Entry<Integer, Map<String, Double>> entryQnt : clis.entrySet()) {
+                        for (Map.Entry<String, Double> entryClis : entryQnt.getValue().entrySet()) {
                             if (entryClis.getKey().equals(info.getCliente())) {
                                 Map<String, Double> map = clis.get(qnt);
                                 qnt += entryQnt.getKey();
                                 gasto = map.remove(entryClis.getKey());
-                                clis.put(entryQnt.getKey(),map);
+                                clis.put(entryQnt.getKey(), map);
                             }
                         }
-                        if (clis.containsKey(qnt)) {
-                            Map<String, Double> map = clis.get(qnt);
-                            double totalGasto = gasto + (qnt * precoN[entry.getKey()]);
-                            map.put(info.getCliente(), totalGasto);
-                            clis.put(qnt, map);
-                        } else {
-                            Map<String, Double> map = new TreeMap<>();
-                            double totalGasto = gasto + (qnt * precoN[entry.getKey()]);
-                            map.put(info.getCliente(), totalGasto);
-                            clis.put(qnt, map);
-                        }
+                    }
+                    if (clis.containsKey(qnt)) {
+                        Map<String, Double> map = clis.get(qnt);
+                        double totalGasto = gasto + (qnt * precoN[entry.getKey()]);
+                        map.put(info.getCliente(), totalGasto);
+                        clis.put(qnt, map);
+                    } else {
+                        Map<String, Double> map = new TreeMap<>();
+                        double totalGasto = gasto + (qnt * precoN[entry.getKey()]);
+                        map.put(info.getCliente(), totalGasto);
+                        clis.put(qnt, map);
                     }
                 }
             }
         }
         if (promo.containsKey(codProd)) {
             Map<Integer, Set<InfoFilial>> meses = promo.get(codProd);
-            for (Iterator<Map.Entry<Integer, Set<InfoFilial>>> it = meses.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<Integer, Set<InfoFilial>> entry = it.next();
+            for (Map.Entry<Integer, Set<InfoFilial>> entry : meses.entrySet()) {
                 for (InfoFilial info : entry.getValue()) {
                     int qnt = info.getQuantidadeComprada();
                     double gasto = 0.0;
 
-                    for (Iterator<Map.Entry<Integer, Map<String, Double>>> iter = clis.entrySet().iterator(); iter.hasNext(); ) {
-                        Map.Entry<Integer, Map<String, Double>> entryQnt = iter.next();
-                        for (Iterator<Map.Entry<String, Double>> iterator = entryQnt.getValue().entrySet().iterator(); iterator.hasNext(); ) {
-                            Map.Entry<String, Double> entryClis = iterator.next();
+                    for (Map.Entry<Integer, Map<String, Double>> entryQnt : clis.entrySet()) {
+                        for (Map.Entry<String, Double> entryClis : entryQnt.getValue().entrySet()) {
                             if (entryClis.getKey().equals(info.getCliente())) {
                                 Map<String, Double> map = clis.get(qnt);
                                 qnt += entryQnt.getKey();
                                 gasto = map.remove(entryClis.getKey());
-                                clis.put(entryQnt.getKey(),map);
+                                clis.put(entryQnt.getKey(), map);
                             }
                         }
-                        if (clis.containsKey(qnt)) {
-                            Map<String, Double> map = clis.get(qnt);
-                            double totalGasto = gasto + (qnt * precoP[entry.getKey()]);
-                            map.put(info.getCliente(), totalGasto);
-                            clis.put(qnt, map);
-                        } else {
-                            Map<String, Double> map = new TreeMap<>();
-                            double totalGasto = gasto + (qnt * precoP[entry.getKey()]);
-                            map.put(info.getCliente(), totalGasto);
-                            clis.put(qnt, map);
-                        }
+                    }
+                    if (clis.containsKey(qnt)) {
+                        Map<String, Double> map = clis.get(qnt);
+                        double totalGasto = gasto + (qnt * precoP[entry.getKey()]);
+                        map.put(info.getCliente(), totalGasto);
+                        clis.put(qnt, map);
+                    } else {
+                        Map<String, Double> map = new TreeMap<>();
+                        double totalGasto = gasto + (qnt * precoP[entry.getKey()]);
+                        map.put(info.getCliente(), totalGasto);
+                        clis.put(qnt, map);
                     }
                 }
             }

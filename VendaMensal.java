@@ -42,7 +42,9 @@ public class VendaMensal {
         this.totalFaturado += qtd*preco;
     }
 
-    public double getPreco() { return this.preco;}
+    public double getPreco() {
+        return this.preco;
+    }
 
     public double getPrecoUnitario() {
         return this.totalFaturado/this.nVendas;

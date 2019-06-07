@@ -82,6 +82,7 @@ public class GereVendasController implements InterfGereVendasController {
                         int x9 = this.view.querie6getX();
                         Map<Integer, Map<String, Double>> clis;
                         clis = this.model.querie9(codProd);
+                        if(clis==null){this.view.printInvalido(codProd); break;}
                         this.view.printQuerie9(clis,x9);
                         break;
                 case 10: break;

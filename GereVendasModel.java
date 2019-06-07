@@ -367,8 +367,14 @@ public class GereVendasModel implements InterfGereVendasModel {
         precoN = this.fact.getPrecoNormalProd(codProd);
         precoP = this.fact.getPrecoPromoProd(codProd);
 
+
         Map<Integer,Map<String,Double>> aux = new TreeMap<>();
         Map<Integer,Map<String,Double>> clis = new TreeMap<>(Collections.reverseOrder());
+
+        if(precoN == null && precoP == null){
+            return clis;
+        }
+
         for(InterfFilial fil: filial){
             aux.putAll(fil.clisProdQ9(codProd,clis,precoN,precoP));
             clis.clear();
