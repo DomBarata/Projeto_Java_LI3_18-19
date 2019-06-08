@@ -98,7 +98,6 @@ public class Filial implements InterfFilial, Serializable {
         return total;
     }
 
-    @Override
     public int totalCompras(int mes) {
         int total = 0;
         List<Map<String, Map<Integer, Set<InfoFilial>>>> dados = clienteProdutos.getDados();
@@ -110,7 +109,6 @@ public class Filial implements InterfFilial, Serializable {
         }
         return total;
     }
-
 
     public Set<String> getProdutos(String codCliente, int mes){
         Set<String> total = new TreeSet<>();
@@ -311,6 +309,4 @@ public class Filial implements InterfFilial, Serializable {
 
         return clientes;
     }
-
-
 }

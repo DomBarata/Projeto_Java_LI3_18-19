@@ -55,5 +55,5 @@ public interface InterfGereVendasModel {
 
     Map<Integer, List<Map<String, Double>>> querie10();
 
-    int getTotalCompras(int mes);
+    int getTotalCompras(int mees);
 }

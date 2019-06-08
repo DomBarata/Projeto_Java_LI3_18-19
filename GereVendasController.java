@@ -20,12 +20,6 @@ public class GereVendasController implements InterfGereVendasController, Seriali
 
     public void start() {
         int op;
-        int[] totalCompras = new int[12];
-
-        for(int mes=0; mes<12; mes++){
-            totalCompras[mes] = this.model.getTotalCompras(mes);
-        }
-        this.view.printTotalComprasMes(totalCompras);
 
         do{
             op = this.view.menu();
@@ -128,12 +122,11 @@ public class GereVendasController implements InterfGereVendasController, Seriali
                             this.view.printInvalido(codProd);
                         }
                         break;
-                case 10:List<Map<String,Double>> filiais = new ArrayList<>();
-                        Map<Integer,List<Map<String,Double>>> meses = new TreeMap<>();
+                case 10:Map<Integer,List<Map<String,Double>>> meses;
                         Crono.start();
                         meses = this.model.querie10();
                         this.view.tempoDeExecucao(Crono.stop());
-                        this.view.printQuerie10(meses, this.model.getFILIAIS());
+                        this.view.printQuerie10(meses);
                         break;
                 case 11:out.println("Ficheiro: " + this.model.getVENDAS());
                         out.println("Vendas Erradas: " + (this.model.getVENDASTOTAL() - this.model.getVENDASVALIDAS()));
@@ -145,6 +138,11 @@ public class GereVendasController implements InterfGereVendasController, Seriali
                         out.println("Número de produtos não comprados: " + (this.model.getCatCliSize()-this.model.getClientesQueCompraram()));
                         out.println("Compras com valor 0.0 :" + this.model.getVENDASGRATIS());
                         out.println("Faturação total: " + this.model.getFaturacaoTotal() + "€");
+                        int[] totalCompras = new int[12];
+                        for(int mees=0; mees<12; mees++){
+                            totalCompras[mees] = this.model.getTotalCompras(mees);
+                        }
+                        this.view.printTotalComprasMes(totalCompras);
                 case 0: break;
                 default: this.view.printOpInvalida();
             }

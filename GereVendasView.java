@@ -1,3 +1,4 @@
+import javax.print.attribute.DocAttributeSet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -162,20 +163,41 @@ public class GereVendasView implements InterfGereVendasView, Serializable {
         }
     }
 
-    public void printQuerie10(Map<Integer, List<Map<String, Double>>> meses, int filiais) {
-        for (Map.Entry<Integer, List<Map<String,Double>>> mesesEntry : meses.entrySet()) {
-            out.println("--------- Mês "+(mesesEntry.getKey()+1)+" ---------");
-            for(int fil=0; fil<filiais; fil++){
-                out.println("Filial "+(fil+1)+":");
-                for (Map.Entry<String,Double> prodsEntry : mesesEntry.getValue().get(fil).entrySet()) {
-                    out.println(prodsEntry.getKey()+": "+prodsEntry.getValue()+"€");
+    public void printQuerie10(Map<Integer, List<Map<String, Double>>> meses) {
+        int mes;
+        do {
+            out.println("Escolha um mês para apresentar resultados ou insira um mês inexistente para sair");
+            mes = lerInt();
+            if(mes > 0 && mes < 13) {
+                out.println("Escolha uma filial");
+                int filial = lerInt();
+
+                Map<String, Double> prods = meses.get(mes - 1).get(filial - 1);
+                List<Map.Entry<String, Double>> toPrint = new ArrayList<>(prods.entrySet());
+                int tamanho = toPrint.size();
+                int index = 0;
+                out.println("---------FILIAL " + filial + " --- Mês " + mes + "---------");
+                while (index < tamanho) {
+                    int counter = 0;
+                    while (counter < PORPAGINA && index < tamanho) {
+                        out.println(toPrint.get(index).getKey() + ": " + toPrint.get(index).getValue());
+                        counter++;
+                        index++;
+                    }
+
+                    int op = gestorPaginacao(index, tamanho, PORPAGINA);
+                    if (op - CODIFICADOR > 0) { //char
+                        if (op - CODIFICADOR == 98) {
+                            index -= (2 * PORPAGINA);
+                        }
+                    } else { // int
+                        index = (op - 1) * PORPAGINA;
+                    }
                 }
             }
-        }
-        waiting();
+        }while(mes > 0 && mes < 13);
     }
 
-    @Override
     public void printTotalComprasMes(int[] total) {
         out.println("Total de compras efetuadas em cada mês");
         for(int mes=0; mes<12; mes++){
@@ -246,6 +268,9 @@ public class GereVendasView implements InterfGereVendasView, Serializable {
     }
 
     public int menu(){
+        out.println();
+        out.println("----------------------------------- MENU -----------------------------------");
+        out.println();
         out.println("1 - Consultar lista de códigos de produtos nunca comprados e o seu respectivo total");
         out.println("2 - Consultar número total de vendas realizadas num determinado mês");
         out.println("3 - Consultar, para cada mês, as informações relativas a um cliente");
@@ -318,8 +343,6 @@ public class GereVendasView implements InterfGereVendasView, Serializable {
     public void printOpInvalida(){
         out.println("Opção inválida!");
     }
-
-
 
     private int gestorPaginacao(int index, int tamanho, int quantidadePagina){
         int pag;
