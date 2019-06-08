@@ -187,27 +187,28 @@ public class GereVendasModel implements InterfGereVendasModel {
 
     public List<Double> Querie3TotalGasto(String codCliente){
         List<Double> gasto = new ArrayList<>(12);
-        List<Map<String,int[]>> prodsQuant = new ArrayList<>(12);
+        List<Map<String,int[]>> meses = new ArrayList<>(12);
         for(int i=0; i<12; i++){
-            prodsQuant.add(i,new HashMap<>());
+            meses.add(i,new HashMap<>());
         }
         for(int i=0; i<12; i++) {
             for (InterfFilial fil: filial){
-                if(prodsQuant.get(i) == null) {
-                    prodsQuant.add(i,fil.prodsQuant(codCliente, i));
+                if(meses.get(i) == null) {
+                    meses.add(i,fil.prodsQuant(codCliente, i));
                 }else{
                     Map<String,int[]> aux = fil.prodsQuant(codCliente, i);
                     for(Map.Entry<String, int[]> entry: aux.entrySet()){
-                        if(prodsQuant.get(i).get(entry.getKey()) != null) {
-                            entry.getValue()[0] += prodsQuant.get(i).get(entry.getKey())[0];
-                            entry.getValue()[1] += prodsQuant.get(i).get(entry.getKey())[1];
+                        if(meses.get(i).get(entry.getKey()) != null) {
+                            entry.getValue()[0] += meses.get(i).get(entry.getKey())[0];
+                            entry.getValue()[1] += meses.get(i).get(entry.getKey())[1];
+                            aux.put(entry.getKey(),entry.getValue());
                         }
                     }
-                    prodsQuant.set(i,aux);
+                    meses.set(i,aux);
                 }
             }
         }
-        gasto = this.fact.totalfaturado(prodsQuant);
+        gasto = this.fact.totalfaturado(meses);
         return gasto;
     }
 
@@ -312,7 +313,7 @@ public class GereVendasModel implements InterfGereVendasModel {
         Set<String> setProds = new HashSet<>();
 
         for(InterfFilial fil: this.filial) {
-            prods = fil.getProdMaisComprado(prods);
+            prods = fil.getProdMaisComprado(prods,x);
         }
 
         for(int i=0; i<x; i++){
@@ -382,5 +383,37 @@ public class GereVendasModel implements InterfGereVendasModel {
             aux.clear();
         }
         return clis;
+    }
+
+    @Override
+    public Map<Integer, List<Map<String, Double>>> querie10() {
+        Map<String,Double> prodPreco = new TreeMap<>();
+        List<Map<String,Double>> filiais = new ArrayList<>();
+        Map<Integer,List<Map<String,Double>>> meses = new TreeMap<>();
+
+        Map<String, List<double[]>> precos;
+        precos = this.fact.getPrecoProds();
+
+        int[] quant = new int[2];
+        double faturado = 0.0;
+
+        for(int mes=0; mes<12; mes++){
+            for(int fil=0; fil<FILIAIS; fil++){
+                for(Map.Entry<String, List<double[]>> entryPreco: precos.entrySet()) {
+                    quant = filial.get(fil).getQuantidadePorTipoProduto(entryPreco.getKey(), mes);
+                    faturado = quant[0]*entryPreco.getValue().get(0)[mes] + quant[1]*entryPreco.getValue().get(1)[mes];
+
+                    if(prodPreco.containsKey(entryPreco.getKey())){
+                        faturado += prodPreco.get(entryPreco.getKey());
+                        prodPreco.put(entryPreco.getKey(),faturado);
+                    }else {
+                        prodPreco.put(entryPreco.getKey(), faturado);
+                    }
+                }
+                filiais.add(fil,prodPreco);
+            }
+            meses.put(mes,filiais);
+        }
+        return meses;
     }
 }

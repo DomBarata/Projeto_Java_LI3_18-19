@@ -21,7 +21,7 @@ public interface InterfFilial {
     boolean isEmpty();
     Map<Integer,Set<String>> getProdutosEQuantidades(Map<Integer, Set<String>> prods, String cli);
 
-    TreeMap<Integer,Set<String>> getProdMaisComprado(TreeMap<Integer,Set<String>> prods);
+    TreeMap<Integer,Set<String>> getProdMaisComprado(TreeMap<Integer, Set<String>> prods, int x);
 
     Map<String, Set<String>> clientesMaisProds(Map<String,Set<String>> cliProds);
 

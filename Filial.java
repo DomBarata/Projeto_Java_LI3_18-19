@@ -257,25 +257,23 @@ public class Filial implements InterfFilial {
         return total;
     }
 
-    public Map<String, int[]> prodsQuant(String codCliente, int mes) {
+    public Map<String,int[]> prodsQuant(String codCliente, int mes) {
         Map<String, int[]> prodsQuant = new HashMap<>();
         int[] quant = new int[2];
-        quant[0] = 0;
-        quant[1] = 0;
 
         for (Map.Entry<String, Map<Integer, Set<InfoFilial>>> entry : normal.entrySet()) {
-            if (entry.getValue().containsKey(mes - 1)) {
-                Set<InfoFilial> info = entry.getValue().get(mes - 1);
+            if (entry.getValue().containsKey(mes)) {
+                Set<InfoFilial> info = entry.getValue().get(mes);
                 for (InfoFilial infoFil : info) {
                     if (infoFil.getCliente().equals(codCliente)) {
-                        if (!prodsQuant.containsKey(entry.getKey())) {
-                            quant[0] += infoFil.getQuantidadeComprada();
-                            prodsQuant.put(entry.getKey(), quant);
-                        } else {
-                            quant = prodsQuant.get(entry.getKey());
-                            quant[0] += infoFil.getQuantidadeComprada();
-                            prodsQuant.put(entry.getKey(), quant);
+                        if(prodsQuant.containsKey(entry.getKey())){
+                            quant[0] = prodsQuant.get(entry.getKey())[0] + infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(),quant);
+                        }else{
+                            quant[0] = infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(),quant);
                         }
+
                     }
                 }
             }
@@ -285,14 +283,14 @@ public class Filial implements InterfFilial {
                 Set<InfoFilial> info = entry.getValue().get(mes);
                 for (InfoFilial infoFil : info) {
                     if (infoFil.getCliente().equals(codCliente)) {
-                        if (!prodsQuant.containsKey(entry.getKey())) {
-                            quant[1] += infoFil.getQuantidadeComprada();
-                            prodsQuant.put(entry.getKey(), quant);
-                        } else {
-                            quant = prodsQuant.get(entry.getKey());
-                            quant[1] += infoFil.getQuantidadeComprada();
-                            prodsQuant.put(entry.getKey(), quant);
+                        if(prodsQuant.containsKey(entry.getKey())){
+                            quant[1] = prodsQuant.get(entry.getKey())[0] + infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(),quant);
+                        }else{
+                            quant[1] = infoFil.getQuantidadeComprada();
+                            prodsQuant.put(entry.getKey(),quant);
                         }
+
                     }
                 }
             }
@@ -311,8 +309,7 @@ public class Filial implements InterfFilial {
                     if (cliente.getCliente().equals(cli)) {
                         int qtd = cliente.getQuantidadeComprada();
                         //Mudar for para Iterator
-                        for (Iterator<Map.Entry<Integer, Set<String>>> iterator = prods.entrySet().iterator(); iterator.hasNext(); ) {
-                            Map.Entry<Integer, Set<String>> prodsEntry = iterator.next();
+                        for (Map.Entry<Integer, Set<String>> prodsEntry : prods.entrySet()) {
                             for (String produto : prodsEntry.getValue()) {
                                 if (produto.equals(entry.getKey())) {
                                     qtd += prodsEntry.getKey();
@@ -366,7 +363,7 @@ public class Filial implements InterfFilial {
     }
 
     @Override
-    public TreeMap<Integer, Set<String>> getProdMaisComprado(TreeMap<Integer, Set<String>> prods) {
+    public TreeMap<Integer, Set<String>> getProdMaisComprado(TreeMap<Integer, Set<String>> prods, int x) {
 
         for (Map.Entry<String, Map<Integer, Set<InfoFilial>>> entry : this.normal.entrySet()) {
             int quant = 0;
@@ -375,13 +372,15 @@ public class Filial implements InterfFilial {
                     quant += info.getQuantidadeComprada();
 
                     for (Map.Entry<Integer, Set<String>> prodsEntry : prods.entrySet()) {
-                        Iterator<String> it = prodsEntry.getValue().iterator();
-                        while (it.hasNext()) {
-                            String prod = it.next();
-                            if (prod.equals(entry.getKey())) {
-                                quant += prodsEntry.getKey();
-                                it.remove();
-                                prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                        if(prodsEntry.getValue().contains(entry.getKey())) {
+                            Iterator<String> it = prodsEntry.getValue().iterator();
+                            while (it.hasNext()) {
+                                String prod = it.next();
+                                if (prod.equals(entry.getKey())) {
+                                    quant += prodsEntry.getKey();
+                                    it.remove();
+                                    prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                                }
                             }
                         }
                     }
@@ -404,13 +403,15 @@ public class Filial implements InterfFilial {
                     quant += info.getQuantidadeComprada();
 
                     for (Map.Entry<Integer, Set<String>> prodsEntry : prods.entrySet()) {
-                        Iterator<String> it = prodsEntry.getValue().iterator();
-                        while (it.hasNext()) {
-                            String prod = it.next();
-                            if (prod.equals(entry.getKey())) {
-                                quant += prodsEntry.getKey();
-                                it.remove();
-                                prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                        if(prodsEntry.getValue().contains(entry.getKey())) {
+                            Iterator<String> it = prodsEntry.getValue().iterator();
+                            while (it.hasNext()) {
+                                String prod = it.next();
+                                if (prod.equals(entry.getKey())) {
+                                    quant += prodsEntry.getKey();
+                                    it.remove();
+                                    prods.put(prodsEntry.getKey(), prodsEntry.getValue());
+                                }
                             }
                         }
                     }
@@ -530,4 +531,6 @@ public class Filial implements InterfFilial {
         }
         return clis;
     }
+
+
 }

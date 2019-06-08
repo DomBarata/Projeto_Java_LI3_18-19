@@ -38,4 +38,6 @@ public interface InterfGereVendasModel {
     Map<Integer, Set<String>> querie8();
 
     Map<Integer, Map<String, Double>> querie9(String codProd);
+
+    Map<Integer, List<Map<String, Double>>> querie10();
 }

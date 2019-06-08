@@ -16,4 +16,6 @@ public interface InterfFaturacao {
     double[] getPrecoNormalProd(String codProd);
 
     double[] getPrecoPromoProd(String codProd);
+
+    Map<String, List<double[]>> getPrecoProds();
 }

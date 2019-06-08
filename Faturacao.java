@@ -171,4 +171,26 @@ public class Faturacao implements InterfFaturacao{
         }else{ return null; }
     }
 
+    @Override
+    public Map<String, List<double[]>> getPrecoProds() {
+        Map<String, List<double[]>> prodsPreco = new HashMap<>();
+        List<double[]> precos = new ArrayList<>(2);
+        double[] preco;
+
+        for(Map.Entry<String,VendaMensal[]> prods: normal.entrySet()){
+            preco = getPrecoNormalProd(prods.getKey());
+
+            precos.add(0,preco);
+            prodsPreco.put(prods.getKey(),precos);
+        }
+        for(Map.Entry<String,VendaMensal[]> prods: promo.entrySet()){
+            preco = getPrecoPromoProd(prods.getKey());
+
+            precos.add(1,preco);
+            prodsPreco.put(prods.getKey(),precos);
+        }
+        return prodsPreco;
+    }
+
+
 }

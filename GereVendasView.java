@@ -149,13 +149,10 @@ public class GereVendasView implements InterfGereVendasView {
         out.println("4 - Através de um código de produto ver, mês a mês, os clientes que o compraram");
         out.println("5 - Através do código de cliente, ver os produtos e respetivas quantidades compradas");
         out.println("6 - Consultar o conjunto de produtos mais vendidos ao longo do ano");
-        out.println("7 -");
+        out.println("7 - Determinar, em cada filial, a lista dos 3 maiores compradores");
         out.println("8 - Consultar a lista dos clientes que compraram mais produtos diferentes");
         out.println("9 - Consultar a lista dos clientes que mais compraram um determinado produto");
-       /* out.println("");
-        out.println("");
-        out.println("");
-        out.println("");*/
+        out.println("10 - Consultar a faturacao total em cada produto mês a mês e, para cada mês, filial a filial");
         out.println("0 - Sair");
 
 
@@ -176,8 +173,8 @@ public class GereVendasView implements InterfGereVendasView {
         return lerInt();
     }
 
-    public void printNumMesInvalido(){
-        out.println("Numero de mês inválido!");
+    public void printNumInvalido(){
+        out.println("Numero inserido inválido!");
         waiting();
     }
 
@@ -280,6 +277,22 @@ public class GereVendasView implements InterfGereVendasView {
 
             }
 
+        }
+        waiting();
+    }
+
+    @Override
+    public void printQuerie10(Map<Integer, List<Map<String, Double>>> meses, int filiais) {
+        for (Map.Entry<Integer, List<Map<String,Double>>> mesesEntry : meses.entrySet()) {
+            out.println("--------- Mês "+(mesesEntry.getKey()+1)+" ---------");
+            waiting();
+            for(int fil=0; fil<filiais; fil++){
+                out.println("Filial "+(fil+1)+":");
+                waiting();
+                for (Map.Entry<String,Double> prodsEntry : mesesEntry.getValue().get(fil).entrySet()) {
+                        out.println(prodsEntry.getKey()+": "+prodsEntry.getValue()+"€");
+                }
+            }
         }
         waiting();
     }

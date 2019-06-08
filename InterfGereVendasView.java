@@ -1,7 +1,6 @@
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public interface InterfGereVendasView {
 
@@ -13,8 +12,6 @@ public interface InterfGereVendasView {
     void printPaginacao(Set<String> nuncaComprados);
 
     void printOpInvalida();
-
-    void printNumMesInvalido();
 
     void printQuerie2(int[] total);
 
@@ -41,4 +38,8 @@ public interface InterfGereVendasView {
     void printI(int i);
 
     void printQuerie9(Map<Integer, Map<String, Double>> clis, int x9);
+
+    void printQuerie10(Map<Integer, List<Map<String, Double>>> meses, int filiais);
+
+    void printNumInvalido();
 }
