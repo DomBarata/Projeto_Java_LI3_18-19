@@ -20,6 +20,12 @@ public class GereVendasController implements InterfGereVendasController, Seriali
 
     public void start() {
         int op;
+        int[] totalCompras = new int[12];
+
+        for(int mes=0; mes<12; mes++){
+            totalCompras[mes] = this.model.getTotalCompras(mes);
+        }
+        this.view.printTotalComprasMes(totalCompras);
 
         do{
             op = this.view.menu();

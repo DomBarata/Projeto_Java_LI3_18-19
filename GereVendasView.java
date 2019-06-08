@@ -175,6 +175,15 @@ public class GereVendasView implements InterfGereVendasView, Serializable {
         waiting();
     }
 
+    @Override
+    public void printTotalComprasMes(int[] total) {
+        out.println("Total de compras efetuadas em cada mês");
+        for(int mes=0; mes<12; mes++){
+            out.println("Mês "+(mes+1)+": "+total[mes]);
+        }
+        waiting();
+    }
+
     public void printPaginacao(Set<String> set){
         List<String> toPrint = new ArrayList<>(set);
         int tamanho = toPrint.size();
@@ -309,6 +318,8 @@ public class GereVendasView implements InterfGereVendasView, Serializable {
     public void printOpInvalida(){
         out.println("Opção inválida!");
     }
+
+
 
     private int gestorPaginacao(int index, int tamanho, int quantidadePagina){
         int pag;

@@ -32,4 +32,6 @@ public interface InterfFilial {
     Map<Integer, Map<String, Double>> clisProdQ9(String codProd, Map<Integer, Map<String, Double>> clis, double[] precoN, double[] precoP);
 
     Set<String> getClientes();
+
+    int totalCompras(int mes);
 }

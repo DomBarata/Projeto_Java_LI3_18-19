@@ -86,11 +86,26 @@ public class Filial implements InterfFilial, Serializable {
         int total = 0;
         List<Map<String, Map<Integer, Set<InfoFilial>>>> dados = clienteProdutos.getDados();
         for(Map<String, Map<Integer, Set<InfoFilial>>> cli : dados) {
-            Set<InfoFilial> produtos = cli.get(codCliente).get(mes);
-            if(produtos != null){
-                for(InfoFilial produto : produtos){
-                    total += produto.getNumVendas();
+            if (cli.containsKey(codCliente)) {
+                Set<InfoFilial> produtos = cli.get(codCliente).get(mes);
+                if(produtos != null){
+                    for(InfoFilial produto : produtos){
+                        total += produto.getNumVendas();
+                    }
                 }
+            }
+        }
+        return total;
+    }
+
+    @Override
+    public int totalCompras(int mes) {
+        int total = 0;
+        List<Map<String, Map<Integer, Set<InfoFilial>>>> dados = clienteProdutos.getDados();
+        for(Map<String, Map<Integer, Set<InfoFilial>>> cli : dados) {
+            Set<String> setCli = cli.keySet();
+            for(String s: setCli){
+                total += this.totalCompras(s,mes);
             }
         }
         return total;
@@ -296,4 +311,6 @@ public class Filial implements InterfFilial, Serializable {
 
         return clientes;
     }
+
+
 }

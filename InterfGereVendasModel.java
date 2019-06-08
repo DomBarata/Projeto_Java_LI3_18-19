@@ -54,4 +54,6 @@ public interface InterfGereVendasModel {
     Double getFaturacaoTotal();
 
     Map<Integer, List<Map<String, Double>>> querie10();
+
+    int getTotalCompras(int mes);
 }

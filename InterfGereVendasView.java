@@ -45,4 +45,6 @@ public interface InterfGereVendasView {
     void printPaginacao(Map<Integer, Map<String, Double>> clis, int x);
 
     void printQuerie10(Map<Integer, List<Map<String, Double>>> meses, int filiais);
+
+    void printTotalComprasMes(int[] total);
 }

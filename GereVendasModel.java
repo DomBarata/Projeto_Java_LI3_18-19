@@ -422,6 +422,15 @@ public class GereVendasModel implements InterfGereVendasModel, Serializable {
         return meses;
     }
 
+    @Override
+    public int getTotalCompras(int mes) {
+        int total = 0;
+        for(int fil=0; fil<FILIAIS; fil++) {
+            total += filial.get(fil).totalCompras(mes);
+        }
+        return total;
+    }
+
     public boolean existeCodCliente(String codCli) {
         return catcli.contains(codCli);
     }
