@@ -1,6 +1,7 @@
 import java.util.Set;
 
 public interface InterfCatProds {
+
     void adiciona(String s);
 
     boolean contains(String codPro);
@@ -8,4 +9,6 @@ public interface InterfCatProds {
     Set<String> getProdutos();
 
     boolean isEmpty();
+
+    int size();
 }

@@ -2,8 +2,8 @@ import static java.lang.System.out;
 
 public class GereVendasAppMVC {
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args)  {
+        //
         InterfGereVendasModel model = new GereVendasModel();
         model.createData();
         if(model.isEmpty()) { out.println("ERRO INICIALIZACAO"); System.exit(-1); }

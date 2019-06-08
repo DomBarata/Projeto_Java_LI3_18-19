@@ -6,16 +6,20 @@ public interface InterfFaturacao {
     void adiciona(InterfVenda venda);
 
     Set<String> getListaOrdenadaProdutosNuncaComprados(InterfCatProds catpro);
-    double getTotalFaturadoProd(String codProd);
+
     double getTotalFaturado(String prod, int[] quant, int mes);
 
     List<Double> totalfaturado(List<Map<String,int[]>> prodsQuant);
 
     boolean isEmpty();
 
+    List<String> getClientesMaisGastadores(InterfFilial f);
+
     double[] getPrecoNormalProd(String codProd);
 
     double[] getPrecoPromoProd(String codProd);
+
+    Double getTotalFaturado();
 
     Map<String, List<double[]>> getPrecoProds();
 }

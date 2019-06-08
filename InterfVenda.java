@@ -8,5 +8,5 @@ public interface InterfVenda {
    int getQuant();
    double getPreco();
 
-    boolean isPromo();
+   boolean isPromo();
 }

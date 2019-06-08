@@ -13,6 +13,8 @@ public interface InterfGereVendasView {
 
     void printOpInvalida();
 
+    void printNumMesInvalido();
+
     void printQuerie2(int[] total);
 
     void printQuerie2(int[] total, int fil);
@@ -21,25 +23,26 @@ public interface InterfGereVendasView {
 
     void printInvalido(String cod);
 
-    void printQuerie3(List<Integer> compras, List<Integer> produtos, List<Double> gasto);
+    void printPaginacaoMes(String str, List<Integer> compras, List<Integer> produtos, List<Double> gasto);
 
     String getCodProduto();
 
-    void printMes(List<Integer> querie4getClientes, List<Integer> querie4getQuantidade, List<Double> querie4getTotalFaturado);
-
     void printPaginacao(Map<Integer, Set<String>> produtos);
 
-    int querie6getX();
 
-    void printQuerie6(Map<String, Integer> prodsEClientes);
+    void printPaginacao(List<List<String>> lista);
 
-    void printQuerie8(int x,Map<Integer, Set<String>> clientes);
+    void waiting();
 
-    void printI(int i);
+    void printPaginacao(List<String> prods, List<Integer> prodsEClientes, int x);
 
-    void printQuerie9(Map<Integer, Map<String, Double>> clis, int x9);
+    void tempoDeExecucao(double tempoDecorrido);
+
+    int getX();
+
+    void printPaginacao(int x, Map<Integer, Set<String>> clientes);
+
+    void printPaginacao(Map<Integer, Map<String, Double>> clis, int x);
 
     void printQuerie10(Map<Integer, List<Map<String, Double>>> meses, int filiais);
-
-    void printNumInvalido();
 }

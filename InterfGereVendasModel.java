@@ -3,11 +3,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface InterfGereVendasModel {
-
-    InterfFaturacao getFact();
-    List<InterfFilial> getFil();
     void createData();
-    int getI();
 
     Set<String> querie1();
 
@@ -22,6 +18,18 @@ public interface InterfGereVendasModel {
     List<Integer> querie4getClientes(String prod);
     List<Double> querie4getTotalFaturado(String prod);
 
+    Map<Integer, Set<String>> querie5(String cli);
+
+    List<String> querie6ProdsMaisComprados(int x);
+    List<Integer> querie6Clientes(List<String> prod);
+
+    List<List<String>> querie7();
+
+    Map<Integer, Set<String>> querie8(int x);
+
+    Map<Integer, Map<String, Double>> querie9(String codProd);
+
+
     boolean existeCodCliente(String codCli);
     boolean existeCodProd(String codProd);
 
@@ -29,15 +37,21 @@ public interface InterfGereVendasModel {
 
     boolean isEmpty();
 
-    Map<Integer, Set<String>> querie5(String cli);
+    String getVENDAS();
 
-    Set<String> querie6PodsMaisComprados(int x);
+    int getVENDASTOTAL();
 
-    Map<String, Integer> querie6Clientes(Set<String> prods);
+    int getVENDASVALIDAS();
 
-    Map<Integer, Set<String>> querie8();
+    int getCatProdsSize();
 
-    Map<Integer, Map<String, Double>> querie9(String codProd);
+    int getCatCliSize();
+
+    int getClientesQueCompraram();
+
+    int getVENDASGRATIS();
+
+    Double getFaturacaoTotal();
 
     Map<Integer, List<Map<String, Double>>> querie10();
 }

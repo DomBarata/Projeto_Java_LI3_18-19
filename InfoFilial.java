@@ -1,47 +1,34 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class InfoFilial {
-    private String cliente;
+public class InfoFilial implements Serializable {
+    private String codigo;
     private int quantidadeComprada;
     private int numVendas;
 
     public InfoFilial(String cliente, int quantidadeComprada) {
-        this.cliente = cliente;
+        this.codigo = cliente;
         this.quantidadeComprada = quantidadeComprada;
         this.numVendas = 1;
     }
 
     public InfoFilial(InfoFilial i){
-        this.cliente = i.getCliente();
+        this.codigo = i.getCodigo();
         this.quantidadeComprada = i.getQuantidadeComprada();
         this.numVendas = i.getNumVendas();
     }
 
     public InfoFilial(){
-        this.cliente = "";
+        this.codigo = "";
         this.quantidadeComprada = 0;
         this.numVendas = 0;
     }
 
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
+    public String getCodigo() {
+        return codigo;
     }
 
     public int getQuantidadeComprada() {
         return quantidadeComprada;
-    }
-
-    public void setQuantidadeComprada(int quantidadeComprada) {
-        this.quantidadeComprada = quantidadeComprada;
-    }
-
-    public void setNumVendas(int numVendas) {
-        this.numVendas = numVendas;
     }
 
     public void incrementaNumVendas(){
@@ -50,10 +37,6 @@ public class InfoFilial {
 
     public int getNumVendas() {
         return numVendas;
-    }
-
-    public boolean equals(InfoFilial info){
-        return this.cliente.equals(info.getCliente());
     }
 
     public InfoFilial clone(){

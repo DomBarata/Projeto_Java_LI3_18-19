@@ -21,4 +21,9 @@ public class CatClientes implements InterfCatClientes{
     public boolean isEmpty(){
         return this.clientes.isEmpty();
     }
+
+    @Override
+    public int size() {
+        return this.clientes.size();
+    }
 }

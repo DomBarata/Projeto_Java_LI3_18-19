@@ -4,4 +4,6 @@ public interface InterfCatClientes {
     boolean contains(String codCli);
 
     boolean isEmpty();
+
+    int size();
 }

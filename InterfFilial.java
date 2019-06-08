@@ -1,29 +1,35 @@
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public interface InterfFilial {
     void adiciona(InterfVenda venda);
-    int getI();
 
-    Map<Integer, Set<String>> totalVendasEClientesMes(int mes);
+    AbstractMap.SimpleEntry<Integer, Set<String>> totalVendasEClientesMes(int mes);
 
     int getQuantidadeTotalProduto(String prod, int mes);
 
     int[] getQuantidadePorTipoProduto(String prod, int mes);
 
     Set<String> getClientes(String prod, int mes);
+    Set<String> getClientes(String prod);
     Set<String> getProdutos(String codCliente, int mes);
 
     int totalCompras(String codCliente, int mes);
 
     Map<String,int[]> prodsQuant(String codCliente, int mes);
+    Map<String,int[]> prodsQuant(String codCliente);
+
     boolean isEmpty();
-    Map<Integer,Set<String>> getProdutosEQuantidades(Map<Integer, Set<String>> prods, String cli);
 
-    TreeMap<Integer,Set<String>> getProdMaisComprado(TreeMap<Integer, Set<String>> prods, int x);
+    Map<String, Integer> getProdMaisComprado(Map<String, Integer> prodsCliQtd);
 
-    Map<String, Set<String>> clientesMaisProds(Map<String,Set<String>> cliProds);
+    Set<String> getTodosOsClientesQueCompraram();
+    Set<String> getTodosOsProdutosQueCompraram();
 
-    Map<Integer,Map<String,Double>> clisProdQ9(String codProd, Map<Integer, Map<String, Double>> clis, double[] precoN, double[] precoP);
+    List<Map<String, Map<Integer, Set<InfoFilial>>>> getClientesInfo();
+
+    Map<String, Set<String>> clientesMaisProds(Map<String, Set<String>> cliProds);
+
+    Map<Integer, Map<String, Double>> clisProdQ9(String codProd, Map<Integer, Map<String, Double>> clis, double[] precoN, double[] precoP);
+
+    Set<String> getClientes();
 }

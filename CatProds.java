@@ -24,5 +24,10 @@ public class CatProds implements InterfCatProds{
     public boolean isEmpty(){
         return this.produtos.isEmpty();
     }
+
+    @Override
+    public int size() {
+        return this.produtos.size();
+    }
 }
 

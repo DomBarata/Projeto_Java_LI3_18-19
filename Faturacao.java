@@ -1,8 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Faturacao implements InterfFaturacao{
-    //Mapa com key codProd, e uma lista com 2 posicoes:
-    //0 Venda Normal, 1 Venda em Promocao, e o seu total faturado
+public class Faturacao implements InterfFaturacao, Serializable {
     private Map<String, VendaMensal[]> normal;
     private Map<String, VendaMensal[]> promo;
 
@@ -20,17 +19,19 @@ public class Faturacao implements InterfFaturacao{
                 VendaMensal v = lista[venda.getMes()-1];
                 if(v != null){
                     v.insertVenda(venda.getQuant(), venda.getPreco());
+                    lista[venda.getMes()-1] = v;
+                    promo.put(venda.getCodPro(), lista);
                 }else{
                     v = new VendaMensal(venda.getQuant(), venda.getPreco());
                     lista[venda.getMes()-1] = v;
+                    promo.put(venda.getCodPro(), lista);
                 }
-
             }else{//caso contrario
                 //Inicializar lista de meses
                 VendaMensal[] meses = new VendaMensal[12];
                 //adicionar uma nova venda mensal à lista
-                VendaMensal v = meses[venda.getMes()-1];
-                v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                VendaMensal v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                meses[venda.getMes()-1] = v;
                 //adicionar a lista ao map
                 promo.put(venda.getCodPro(), meses);
             }
@@ -40,16 +41,19 @@ public class Faturacao implements InterfFaturacao{
                 VendaMensal v = lista[venda.getMes()-1];
                 if(v != null){
                     v.insertVenda(venda.getQuant(), venda.getPreco());
+                    lista[venda.getMes()-1] = v;
+                    normal.put(venda.getCodPro(), lista);
                 }else{
                     v = new VendaMensal(venda.getQuant(), venda.getPreco());
                     lista[venda.getMes()-1] = v;
+                    normal.put(venda.getCodPro(), lista);
                 }
             }else{//caso contrario
                 //Inicializar lista de meses
                 VendaMensal[] meses = new VendaMensal[12];
                 //adicionar uma nova venda mensal à lista
-                VendaMensal v = meses[venda.getMes()-1];
-                v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                VendaMensal v = new VendaMensal(venda.getQuant(), venda.getPreco());
+                meses[venda.getMes()-1] = v;
                 //adicionar a lista ao map
                 normal.put(venda.getCodPro(), meses);
             }
@@ -63,18 +67,12 @@ public class Faturacao implements InterfFaturacao{
             if(!this.normal.containsKey(s) && !this.promo.containsKey(s))
                 nuncaComprados.add(s);
         }
-        System.out.println("nunca comprados " + nuncaComprados.size()); //a correr teste
+
         return nuncaComprados;
     }
 
-    public double getTotalFaturadoProd(String codProd){
-//        return this.faturacao.get(codProd).get(0)+this.faturacao.get(codProd).get(1);
-        return 0;
-    }
-
-
     public double getTotalFaturado(String prod, int[] quant, int mes){
-        double total[] = new double[2];
+        double[] total = new double[2];
         if(normal.containsKey(prod)){
             VendaMensal venda = normal.get(prod)[mes];
             if(venda != null)
@@ -88,60 +86,76 @@ public class Faturacao implements InterfFaturacao{
         return total[0]+total[1];
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for(Map.Entry<String, VendaMensal[]> entry : normal.entrySet()){
-            sb.append("Produto:").append(entry.getKey()).append("\n");
-            VendaMensal[] vendas = entry.getValue();
-            if(vendas!=null){
-                int i = 0;
-                for(VendaMensal v:vendas){
-                    i++;
-                    if(v!=null)
-                        sb.append("venda:" + v.getnVendas() + ", " + v.getTotalFaturado() + ", " + i +"\n");
-                }
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
     public List<Double> totalfaturado(List<Map<String,int[]>> prodsQuant){
         List<Double> total = new ArrayList<>(12);
         double[] faturado = new double[2];
-
+        for(int i=0; i<12; i++){
+            total.add(i,0.0);
+        }
         for(int i=0; i<12; i++){
             faturado[0] = 0.0;
             faturado[1] = 0.0;
-
             for(Map.Entry<String,int[]> entry: prodsQuant.get(i).entrySet()){
                 if(normal.containsKey(entry.getKey())){
                     VendaMensal venda = normal.get(entry.getKey())[i];
-                    if(venda != null) {
-                        faturado[0] += entry.getValue()[0] * venda.getPreco();
-                        System.out.println(entry.getKey() + "  " + faturado[0]);
-                    }
+                    if(venda != null)
+                        faturado[0] += entry.getValue()[0] * venda.getPrecoUnitario();
                 }
                 if(promo.containsKey(entry.getKey())){
                     VendaMensal venda = promo.get(entry.getKey())[i];
-                    if(venda != null) {
-                        faturado[1] += entry.getValue()[1] * venda.getPreco();
-                        System.out.println(entry.getKey() + "  " + faturado[0]);
-                    }
+                    if(venda != null)
+                        faturado[1] += entry.getValue()[1] * venda.getPrecoUnitario();
                 }
-                System.out.println("nao contem");
             }
-            total.add(i,faturado[0]+faturado[1]);
+            total.set(i,faturado[0]+faturado[1]);
         }
         return total;
     }
 
-    public boolean isEmpty(){
-        return this.normal.isEmpty() && this.promo.isEmpty();
+    public List<String> getClientesMaisGastadores(InterfFilial f){
+        Map<String, Double> clientesGastadores = new TreeMap<>();
+        List<Map<String, Map<Integer, Set<InfoFilial>>>> tiposDeCompras = f.getClientesInfo();
+        for(Map<String, Map<Integer, Set<InfoFilial>>> clientes : tiposDeCompras){
+            for(Map.Entry<String, Map<Integer, Set<InfoFilial>>> cliente : clientes.entrySet()){
+                double total = 0;
+                for(Map.Entry<Integer, Set<InfoFilial>> mes : cliente.getValue().entrySet()){
+                    for(InfoFilial produto : mes.getValue()){
+                        total += getTotalFaturado(produto.getCodigo(), produto.getQuantidadeComprada(),
+                                mes.getKey(), tiposDeCompras.indexOf(clientes) == 1);
+                    }
+                }
+                if(!clientesGastadores.containsKey(cliente.getKey()))
+                    clientesGastadores.put(cliente.getKey(), total);
+                else{
+                    total+=clientesGastadores.get(cliente.getKey());
+                    clientesGastadores.put(cliente.getKey(), total);
+                }
+            }
+        }
+        TreeMap<Double, String> ret = new TreeMap<>(Comparator.reverseOrder());
+        for(Map.Entry<String, Double> entry : clientesGastadores.entrySet()){
+            ret.put(entry.getValue(), entry.getKey());
+        }
+        clientesGastadores.clear();
+
+        List<String> clientesBosses = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            Map.Entry<Double, String> clicli = ret.pollFirstEntry();
+            clientesBosses.add(clicli.getValue());
+        }
+        return clientesBosses;
     }
 
-    @Override
+    private double getTotalFaturado(String prod, int quant, int mes, boolean isPromo){
+        if(isPromo){
+            VendaMensal venda = promo.get(prod)[mes];
+            return quant*venda.getPrecoUnitario();
+        }else{
+            VendaMensal venda = normal.get(prod)[mes];
+            return quant*venda.getPrecoUnitario();
+        }
+    }
+
     public double[] getPrecoNormalProd(String codProd) {
         double[] preco = new double[12];
         if(this.normal.containsKey(codProd)){
@@ -156,7 +170,6 @@ public class Faturacao implements InterfFaturacao{
         }else{ return null; }
     }
 
-    @Override
     public double[] getPrecoPromoProd(String codProd) {
         double[] preco = new double[12];
         if(this.promo.containsKey(codProd)){
@@ -171,7 +184,23 @@ public class Faturacao implements InterfFaturacao{
         }else{ return null; }
     }
 
-    @Override
+    public Double getTotalFaturado() {
+        double total = 0;
+        for(Map.Entry<String, VendaMensal[]> entry : normal.entrySet()){
+            for(VendaMensal venda : entry.getValue()){
+                if(venda != null)
+                    total += venda.getTotalFaturado();
+            }
+        }
+        for(Map.Entry<String, VendaMensal[]> entry : promo.entrySet()){
+            for(VendaMensal venda : entry.getValue()){
+                if(venda != null)
+                    total += venda.getTotalFaturado();
+            }
+        }
+        return total;
+    }
+
     public Map<String, List<double[]>> getPrecoProds() {
         Map<String, List<double[]>> prodsPreco = new HashMap<>();
         List<double[]> precos = new ArrayList<>(2);
@@ -192,5 +221,7 @@ public class Faturacao implements InterfFaturacao{
         return prodsPreco;
     }
 
-
+    public boolean isEmpty(){
+        return this.normal.isEmpty() && this.promo.isEmpty();
+    }
 }

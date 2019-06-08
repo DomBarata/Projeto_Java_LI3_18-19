@@ -1,4 +1,4 @@
-public interface InterfGereVendasController {
+interface InterfGereVendasController {
     void setModel(InterfGereVendasModel model);
 
     void setView(InterfGereVendasView view);
